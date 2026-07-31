@@ -316,6 +316,7 @@ const MILESTONES_DEF=[
 const fmt = n => (n===''||n==null)?'':Math.round(n).toLocaleString('en-US');
 const pct = d => (d==null)?'':Math.round(d*100)+'%';
 const esc = s => (''+(s==null?'':s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const mesesNum = p => parseFloat((''+(p.meses||'')).replace(',','.').replace(/[^\d.]/g,''))||0;
 function stChip(k){ const c=ST_COLOR[k]||'#8b949e'; return `<span class="st" style="background:${c}22;color:${c}">${ST_LABEL[k]||k}</span>`; }
 function confInfo(p){ // ['conf'|'est'|'ver', label html] — confiança do stipend
   const c=(''+(p.conf||'')).toLowerCase();
@@ -425,6 +426,8 @@ const PG_COLS=[
  {k:'inst',t:'Instituição / programa',r:p=>`<span class="inst">${esc(p.inst)}</span><span class="prog">${esc(p.prog||'')}</span>`},
  {k:'cidade',t:'Cidade',r:p=>esc(p.cidade)},
  {k:'stipend',t:'Stipend',num:1,r:p=>fmt(p.stipend)},
+ {k:'_meses',t:'Meses',num:1,r:p=>{const s=''+(p.meses||'');if(!s)return '';const n=mesesNum(p);
+   return `<span class="tag ${n>=12?'cf':'ok'}" title="stipend pago por ${esc(s)} do ano${n<12?' — os demais meses ficam por conta do candidato (verão)':''}">${esc(s)}</span>`}},
  {k:'liquido',t:'Líquido',num:1,r:p=>`<span title="imposto estimado: US$ ${fmt(p.tax)}">${fmt(p.liquido)}</span>`},
  {k:'sobra',t:'Sobra/ano',num:1,r:p=>`<span class="${p.sobra>=0?'pos':'neg'}">${fmt(p.sobra)}</span>`},
  {k:'_viab',t:'Viável',r:p=>viabInfo(p)[1]},
@@ -445,6 +448,7 @@ function pgVal(p,k){
   if(k==='_status')return ACTIVE_ST.indexOf(ps(p.n).status);
   if(k==='_prob')return ps(p.n).prob||0;
   if(k==='_chk')return checkProgress(p.n)[0];
+  if(k==='_meses')return mesesNum(p);
   return p[k];
 }
 function renderProgramas(){
