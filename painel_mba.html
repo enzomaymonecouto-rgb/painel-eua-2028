@@ -1,0 +1,1596 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projeto EUA 2028 — Central do MBA</title>
+<style>
+:root{
+  --bg:#0d1117; --bg2:#161b22; --bg3:#1c2230; --line:#2a3038;
+  --txt:#e6edf3; --mut:#8b949e; --accent:#bc8cff; --accent2:#58a6ff;
+  --green:#3fb950; --greenbg:#12361f; --red:#f85149; --redbg:#3d1417;
+  --yellow:#d29922; --yellowbg:#3a2d10; --orange:#f0883e; --orangebg:#3a2410;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.5;padding:24px}
+.wrap{max-width:1500px;margin:0 auto}
+header{display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;margin-bottom:6px}
+h1{font-size:24px;font-weight:700;letter-spacing:-.3px}
+h1 .em{color:var(--accent)}
+.badge{background:var(--accent);color:#0d1117;font-size:11px;font-weight:800;padding:3px 9px;border-radius:6px;letter-spacing:.4px;text-transform:uppercase}
+.sub{color:var(--mut);font-size:13px;margin-bottom:14px}
+.sub a{color:var(--accent2);text-decoration:none}
+.sub a:hover{text-decoration:underline}
+.hbtns{margin-left:auto;display:flex;gap:8px;align-items:center}
+.btn{background:var(--bg2);border:1px solid var(--line);color:var(--txt);padding:7px 13px;border-radius:8px;cursor:pointer;font-size:12.5px;font-weight:600}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:#0d1117;border-color:var(--accent)}
+.saved{color:var(--mut);font-size:11.5px}
+nav{display:flex;gap:8px;margin:14px 0 20px;flex-wrap:wrap}
+.tab-btn{background:var(--bg2);border:1px solid var(--line);color:var(--mut);padding:9px 16px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;transition:.15s}
+.tab-btn:hover{border-color:var(--accent)}
+.tab-btn.active{background:var(--accent);color:#0d1117;border-color:var(--accent)}
+section.tab{display:none}
+section.tab.active{display:block}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px;margin-bottom:18px}
+.card{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.card .v{font-size:25px;font-weight:700;font-variant-numeric:tabular-nums}
+.card .l{color:var(--mut);font-size:12px;margin-top:2px}
+.card .s{color:var(--mut);font-size:11px;margin-top:6px;line-height:1.45}
+.card.g .v{color:var(--green)}
+.card.y .v{color:var(--yellow)}
+.card.a .v{color:var(--accent2)}
+.card.p .v{color:var(--accent)}
+.card.o .v{color:var(--orange)}
+.card.r .v{color:var(--red)}
+.panel{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:16px}
+.panel h2{font-size:15px;font-weight:700;margin-bottom:12px}
+.panel h2 .hint{color:var(--mut);font-weight:400;font-size:12px;margin-left:8px}
+.panel p{margin-bottom:10px}
+.panel p:last-child{margin-bottom:0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:1000px){.grid2{grid-template-columns:1fr}}
+.controls{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px;align-items:center}
+input,select,textarea{background:var(--bg2);border:1px solid var(--line);color:var(--txt);padding:8px 11px;border-radius:8px;font-size:13px;font-family:inherit}
+.controls input[type=text]{min-width:230px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent)}
+.count{color:var(--mut);font-size:12px;margin-left:auto}
+.tbl-wrap{background:var(--bg2);border:1px solid var(--line);border-radius:12px;overflow:auto;max-height:74vh}
+table{border-collapse:collapse;width:100%;font-size:12.5px}
+thead th{position:sticky;top:0;background:var(--bg3);color:var(--mut);text-align:left;padding:10px;font-weight:600;white-space:nowrap;cursor:pointer;user-select:none;border-bottom:1px solid var(--line);z-index:2}
+thead th:hover{color:var(--txt)}
+thead th .arr{opacity:.4;font-size:10px}
+tbody td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+tbody tr{cursor:pointer}
+tbody tr:hover{background:var(--bg3)}
+.inst{font-weight:600;color:var(--txt)}
+.prog{color:var(--mut);font-size:11.5px;display:block;margin-top:1px}
+.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pos{color:var(--green)}
+.neg{color:var(--red)}
+.pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap}
+.pill.sim{background:var(--greenbg);color:var(--green)}
+.pill.nao{background:var(--redbg);color:var(--red)}
+.pill.lim{background:var(--yellowbg);color:var(--yellow)}
+.tag{display:inline-block;padding:1px 7px;border-radius:5px;font-size:10.5px;font-weight:600;white-space:nowrap}
+.tag.cf{background:var(--greenbg);color:var(--green)}
+.tag.est{background:var(--yellowbg);color:var(--yellow)}
+.tag.av{background:var(--orangebg);color:var(--orange)}
+.tag.no{background:var(--redbg);color:var(--red)}
+.tag.ok{background:var(--bg3);color:var(--mut)}
+.small{color:var(--mut);font-size:11px;max-width:330px}
+.bar{height:8px;background:var(--bg3);border-radius:4px;overflow:hidden;margin-top:6px}
+.bar>div{height:100%;background:var(--accent);border-radius:4px;transition:.3s}
+.bar.g>div{background:var(--green)}
+.bar.y>div{background:var(--yellow)}
+.bar.r>div{background:var(--red)}
+.kanban{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;align-items:start}
+.kcol{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:10px}
+.kcol h3{font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin:2px 4px 10px;display:flex;justify-content:space-between}
+.kcard{background:var(--bg3);border:1px solid var(--line);border-radius:9px;padding:10px 11px;margin-bottom:8px;cursor:pointer}
+.kcard:hover{border-color:var(--accent)}
+.kcard .ki{font-weight:600;font-size:12.5px}
+.kcard .km{color:var(--mut);font-size:11px;margin-top:3px;display:flex;gap:8px;flex-wrap:wrap}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.68);display:none;z-index:10;overflow:auto;padding:30px 16px}
+.modal-bg.open{display:block}
+.modal{max-width:880px;margin:0 auto;background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:22px 24px}
+.modal h2{font-size:19px;margin-bottom:2px}
+.modal .msub{color:var(--mut);font-size:12.5px;margin-bottom:14px}
+.mclose{float:right;background:none;border:none;color:var(--mut);font-size:22px;cursor:pointer;line-height:1}
+.mclose:hover{color:var(--txt)}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:10px;margin-bottom:14px}
+.mstat{background:var(--bg3);border-radius:9px;padding:9px 11px}
+.mstat .l{color:var(--mut);font-size:10.5px;text-transform:uppercase;letter-spacing:.4px}
+.mstat .v{font-size:14.5px;font-weight:700;margin-top:1px}
+.mrow{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.mrow label{color:var(--mut);font-size:12px;font-weight:600}
+.mh{font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin:16px 0 8px;font-weight:700}
+textarea{width:100%;min-height:70px;resize:vertical}
+.note{color:var(--mut);font-size:11.5px;margin-top:10px;line-height:1.55}
+.warn{background:var(--yellowbg);border:1px solid #5c4a1a;border-radius:9px;padding:11px 14px;font-size:12.5px;margin:12px 0;line-height:1.55}
+.danger{background:var(--redbg);border:1px solid #63232a;border-radius:9px;padding:11px 14px;font-size:12.5px;margin:12px 0;line-height:1.55}
+.good{background:var(--greenbg);border:1px solid #1e5c31;border-radius:9px;padding:11px 14px;font-size:12.5px;margin:12px 0;line-height:1.55}
+.simgrid{display:grid;grid-template-columns:300px 1fr;gap:18px}
+@media(max-width:1000px){.simgrid{grid-template-columns:1fr}}
+.field{margin-bottom:13px}
+.field label{display:block;color:var(--mut);font-size:11.5px;font-weight:600;margin-bottom:4px}
+.field input,.field select{width:100%}
+.field input[type=range]{accent-color:var(--accent);padding:0}
+.out{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:11px;margin-bottom:14px}
+.out .o{background:var(--bg3);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.out .o .l{color:var(--mut);font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+.out .o .v{font-size:21px;font-weight:700;margin-top:2px;font-variant-numeric:tabular-nums}
+.out .o.g .v{color:var(--green)}
+.out .o.r .v{color:var(--red)}
+.out .o.y .v{color:var(--yellow)}
+.out .o.p .v{color:var(--accent)}
+.verdict{border-radius:10px;padding:14px 16px;font-size:14px;font-weight:600;line-height:1.5}
+.verdict.ok{background:var(--greenbg);color:var(--green);border:1px solid #1e5c31}
+.verdict.lim{background:var(--yellowbg);color:var(--yellow);border:1px solid #5c4a1a}
+.verdict.no{background:var(--redbg);color:var(--red);border:1px solid #63232a}
+.chain{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:10px;margin-bottom:14px}
+.link{background:var(--bg3);border:1px solid var(--line);border-radius:10px;padding:12px}
+.link .ln{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px;min-height:26px}
+.link .lv{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;margin-bottom:4px}
+.link input[type=range]{width:100%;accent-color:var(--accent);padding:0}
+.tl{position:relative;padding-left:26px}
+.tl:before{content:"";position:absolute;left:8px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.tli{position:relative;padding:11px 0 11px 4px;border-bottom:1px solid var(--line);display:flex;gap:12px;align-items:flex-start;cursor:pointer}
+.tli:last-child{border-bottom:none}
+.tli:before{content:"";position:absolute;left:-22px;top:17px;width:11px;height:11px;border-radius:50%;background:var(--bg);border:2px solid var(--mut)}
+.tli.done:before{background:var(--green);border-color:var(--green)}
+.tli.crit:before{border-color:var(--red);background:var(--redbg)}
+.tli .when{width:132px;flex:none;font-weight:700;font-size:12.5px;color:var(--accent)}
+.tli.crit .when{color:var(--red)}
+.tli .what{flex:1;font-size:13px}
+.tli.done .what{color:var(--mut);text-decoration:line-through}
+.tli .why{color:var(--mut);font-size:11.5px;margin-top:3px;display:block;text-decoration:none}
+.ck{display:flex;gap:10px;align-items:flex-start;padding:9px 4px;border-bottom:1px solid var(--line);cursor:pointer}
+.ck:last-child{border-bottom:none}
+.ck input{accent-color:var(--accent);margin-top:3px;flex:none}
+.ck .cl{flex:1;font-size:13px}
+.ck.done .cl{color:var(--mut);text-decoration:line-through}
+.ck .cw{color:var(--mut);font-size:11.5px;display:block;margin-top:2px;text-decoration:none}
+.ck .prio{background:var(--redbg);color:var(--red);font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;margin-right:6px}
+ul.tight{margin:8px 0 8px 18px}
+ul.tight li{margin-bottom:6px;font-size:13px}
+.rank{display:flex;gap:11px;align-items:flex-start;padding:11px 4px;border-bottom:1px solid var(--line)}
+.rank:last-child{border-bottom:none}
+.rank .pos2{width:26px;height:26px;flex:none;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12.5px;color:var(--accent)}
+.rank .rn{font-weight:600;font-size:13.5px}
+.rank .rw{color:var(--mut);font-size:11.5px;margin-top:2px}
+.rank .rr{margin-left:auto;text-align:right;font-size:12px;color:var(--mut);white-space:nowrap;flex:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Projeto EUA 2028 — <span class="em">Central do MBA</span></h1>
+  <span class="badge">Trilha paralela</span>
+  <div class="hbtns">
+    <span class="saved" id="savedAt"></span>
+    <button class="btn" onclick="exportState()">Exportar</button>
+    <button class="btn" onclick="document.getElementById('impFile').click()">Importar</button>
+    <input type="file" id="impFile" accept=".json" style="display:none" onchange="importState(this)">
+  </div>
+</header>
+<div class="sub">
+  MBA STEM em marketing nos EUA · varredura de set/2026 · intake Fall 2028 · rota F-1 &rarr; OPT &rarr; EB-2 NIW.
+  Painel separado do PhD — nada aqui se mistura com a longlist de doutorado.
+  Fonte: <code>PESQUISA_MBA_STEM_MARKETING_2026-09.md</code>
+</div>
+
+<nav>
+  <button class="tab-btn active" data-t="overview" onclick="go('overview')">Visão geral</button>
+  <button class="tab-btn" data-t="programas" onclick="go('programas')">Programas</button>
+  <button class="tab-btn" data-t="pipeline" onclick="go('pipeline')">Pipeline</button>
+  <button class="tab-btn" data-t="financiamento" onclick="go('financiamento')">Financiamento</button>
+  <button class="tab-btn" data-t="j1" onclick="go('j1')">Visto J-1</button>
+  <button class="tab-btn" data-t="ficar" onclick="go('ficar')">Ficar nos EUA</button>
+  <button class="tab-btn" data-t="juridico" onclick="go('juridico')">Custo jurídico</button>
+  <button class="tab-btn" data-t="rota" onclick="go('rota')">Rota 2026–2033</button>
+  <button class="tab-btn" data-t="pendencias" onclick="go('pendencias')">Pendências</button>
+</nav>
+
+<!-- ============ VISÃO GERAL ============ -->
+<section class="tab active" id="tab-overview">
+  <div class="cards" id="ovCards"></div>
+
+  <div class="panel">
+    <h2>O veredito da varredura</h2>
+    <p>O universo de MBA financiado é <strong>pequeno</strong>, e a tensão é estrutural: <strong>onde o
+    dinheiro é generoso, a colocação é fraca; onde a colocação é forte, a bolsa cobre tuition e não paga
+    a vida.</strong> Só três combinações passam no teste de déficit &le;30%, e as três dependem de ganhar
+    o prêmio <em>mais competitivo</em> da escola — não existe aqui o equivalente ao PhD, onde a bolsa vem
+    por padrão com a admissão.</p>
+    <p>O que reabre o jogo é a decisão de aceitar dívida: <strong>carta de aprovação de empréstimo serve
+    como comprovação de fundos para o I-20</strong>, então programas caros deixam de ser eliminados
+    automaticamente. A pergunta muda de <em>"quem me paga?"</em> para <strong><em>"quanto eu posso dever
+    e ainda quitar com 36 meses de OPT, sem depender de ganhar o H-1B?"</em></strong></p>
+    <div class="good"><strong>Regra de decisão:</strong> tome emprestado até o que 36 meses de OPT quitam
+    sozinhos. Acima disso você não está financiando uma carreira, está financiando um bilhete de loteria.</div>
+    <div class="warn"><strong>A armadilha nº 1 do plano:</strong> o alvo óbvio de um "MBA STEM em marketing"
+    é CPG / brand management — e CPG é das piores funções para patrocínio de visto. A própria lista de
+    empregadores amigáveis a internacionais da Kelley nomeia Ogilvy, Publicis e HubSpot, não P&amp;G nem
+    General Mills. <strong>A escolha de função vale mais que a escolha de escola.</strong></div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h2>Ranking operacional <span class="hint">depois do reenquadramento pela dívida</span></h2>
+      <div id="ovRank"></div>
+    </div>
+    <div class="panel">
+      <h2>As três leituras que a conta obriga</h2>
+      <ul class="tight">
+        <li><strong>O jogo se decide no prêmio de topo, não na escola.</strong> Broad com fellowship de
+        US$ 31k sobra dinheiro; Broad com fellowship mediana fica no limite; Broad só com isenção falha.
+        A dispersão <em>dentro</em> de uma escola é maior que a dispersão <em>entre</em> escolas.</li>
+        <li><strong>Walton tem o menor déficit absoluto da lista</strong> (US$ 13k) e mesmo assim reprova
+        no teste percentual, porque o MBA de 1 ano não tem verão no meio para diluir. Se a pergunta fosse
+        "quanto dinheiro preciso arrumar", Walton ganharia. Como é "o programa sustenta o casal?", reprova.</li>
+        <li><strong>MBA de 1 ano é pior para quem quer ficar</strong>, mesmo custando menos: sem estágio de
+        verão não existe o mecanismo padrão de conversão em oferta full-time.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROGRAMAS ============ -->
+<section class="tab" id="tab-programas">
+  <details class="note" style="margin:0 0 14px">
+    <summary style="cursor:pointer;font-weight:600">O que foi eliminado na varredura de AZ, WA, OR, AL, VA e NC (set/2026)</summary>
+    <div style="margin-top:10px">
+      <p><b>Não têm MBA em tempo integral</b> — e sem tempo integral não há F-1 nem J-1:</p>
+      <ul>
+        <li><b>Virginia Tech (Pamplin)</b> — hoje só Evening (fechado para novas inscrições) e o Flex MBA, em Alexandria ou 100% online, a partir de Fall 2026.</li>
+        <li><b>Wake Forest</b> — saiu do mercado de MBA em tempo integral em 2015. Só programas para quem já trabalha.</li>
+      </ul>
+      <p><b>Não têm STEM em marketing</b> — a designação existe, mas não alcança a função desejada:</p>
+      <ul>
+        <li><b>William &amp; Mary (Mason)</b> — STEM só em Business Analytics, Finance e Supply Chain. Tem bolsas de tuition integral (McGlothlin, Mason Scholars, BGS), mas a assistantship paga até US$ 4.000/ano.</li>
+        <li><b>Arizona (Eller)</b> — a designação está no MBA dual com MS em Sistemas de Informação, não no MBA sozinho. Tucson é a cidade mais barata das seis (US$ 997 de aluguel), e mesmo assim não compensa.</li>
+        <li><b>Oregon State</b> — o MBA não é STEM (as designações estão nos mestrados especializados) e a faculdade de negócios <b>não oferece nenhuma assistantship</b>.</li>
+      </ul>
+      <p><b>Financiamento insuficiente ou incompatível com as regras do projeto:</b></p>
+      <ul>
+        <li><b>UW Foster (Seattle)</b> — STEM por pathway de eletivas (a arquitetura de maior risco), só 1/3 da turma recebe algum apoio, Seattle é a cidade mais cara pesquisada (US$ 1.925 de aluguel) e a própria página de internacionais aponta para <b>Fulbright</b>, que dispara o 212(e). Eliminada por três motivos independentes.</li>
+        <li><b>Alabama (Manderson)</b> — a assistantship paga <b>meia</b> tuition e US$ 7.800 em nove meses, e taxas de internacional ficam de fora. A metade não coberta vira custo adicional.</li>
+        <li><b>Oregon (Lundquist)</b> — 75% recebem bolsa, mas são abatimentos de tuition; as bolsas com stipend de US$ 25 mil são de doutorado, não de MBA.</li>
+      </ul>
+    </div>
+  </details>
+  <details class="note" style="margin:0 0 14px">
+    <summary style="cursor:pointer;font-weight:600">O que foi eliminado na varredura de IL, RI, MA, TX, CA, SC, PA e FL (set/2026)</summary>
+    <div style="margin-top:10px">
+      <p><b>Não têm MBA em tempo integral:</b></p>
+      <ul>
+        <li><b>Illinois (Gies)</b> — encerrou o MBA residencial em tempo integral e o noturno em 2019. Hoje só o iMBA online.</li>
+        <li><b>Penn State (Smeal)</b> — fechou o MBA de dois anos em 2024. O que existe é um MBA de <b>um ano</b>, com designação STEM — sem verão para estágio e, no J-1, com Academic Training limitado à duração do curso.</li>
+        <li><b>Brown</b> — o único MBA é o <b>IE Brown Executive MBA</b>, um diploma conjunto executivo de 15 meses em formato híbrido com residências em Providence, Madri e Cidade do Cabo. Não é programa residencial em tempo integral.</li>
+      </ul>
+      <p><b>Têm dinheiro bom e STEM na função errada:</b></p>
+      <ul>
+        <li><b>UMass Amherst (Isenberg)</b> — três semestres em residência, bolsas de isenção de tuition disponíveis, mas o <b>MBA não é STEM em nenhuma área de foco</b> (só os duplos com Business Analytics e Finance). E MBAs não são elegíveis a assistantship.</li>
+        <li><b>Temple (Fox)</b> — assistantships com stipend, remissão de tuition e seguro-saúde, que é exatamente a estrutura certa. STEM só em Business Analytics, Finance e IT Management.</li>
+        <li><b>Texas A&amp;M (Mays)</b> — todos considerados para bolsa de mérito e isenção da parcela de não-residente. MBA sozinho não é STEM; só o MBA+MS Analytics.</li>
+        <li><b>Bryant (RI)</b> — MBA de 12 meses; STEM só na concentração de business analytics.</li>
+        <li><b>Darla Moore (SC)</b> — o International MBA é forte, mas o STEM vem de um certificado de business analytics, e as assistantships de US$ 10.000 têm prioridade para bolsistas Coverdell (ex-Peace Corps), condição que o perfil deste projeto não atende.</li>
+      </ul>
+      <p><b>Eliminados pelo custo da cidade:</b></p>
+      <ul>
+        <li><b>Massachusetts inteiro</b> — Boston tem aluguel de 1 quarto de <b>US$ 3.371</b>, o que põe o custo do casal em US$ 63.500/ano. Mesmo com tuition integral, a dívida passa do teto. Vale para MIT Sloan, Harvard, Babson e Northeastern igualmente.</li>
+        <li><b>Califórnia</b> — Irvine US$ 2.700, San Diego US$ 2.400, Davis US$ 1.900, mais a alíquota estadual mais alta do país. UC Irvine Merage e UCSD Rady têm MBA STEM, mas sem stipend e nessas cidades a parcela passa de 30% da sobra.</li>
+      </ul>
+    </div>
+  </details>
+  <div class="controls">
+    <input type="text" id="pgSearch" placeholder="Buscar escola, cidade, cenário…" oninput="renderProgramas()">
+    <select id="pgStem" onchange="renderProgramas()">
+      <option value="">STEM: todos</option>
+      <option value="sim">STEM confirmado</option>
+      <option value="parcial">STEM parcial / por eletiva</option>
+      <option value="nao">STEM não confirmado</option>
+    </select>
+    <select id="pgJ1" onchange="renderProgramas()">
+      <option value="">J-1: todos</option>
+      <option value="forte">J-1 plausível</option>
+      <option value="medio">J-1 frágil / indeterminado</option>
+      <option value="fraco">J-1 improvável</option>
+    </select>
+    <select id="pgPassa" onchange="renderProgramas()">
+      <option value="">Teste &le;30%: todos</option>
+      <option value="Sim">Passa</option>
+      <option value="Limite">No limite</option>
+      <option value="Não">Reprova</option>
+    </select>
+    <select id="pgTeto" onchange="renderProgramas()">
+      <option value="">Teto de dívida: todos</option>
+      <option value="1">Cabe no teto</option>
+      <option value="0">Estoura o teto</option>
+    </select>
+    <select id="pgStatus" onchange="renderProgramas()"><option value="">Todos os status</option></select>
+    <span class="count" id="pgCount"></span>
+  </div>
+  <div class="tbl-wrap"><table><thead id="pgHead"></thead><tbody id="pgBody"></tbody></table></div>
+  <div class="note" id="pgNote"></div>
+</section>
+
+<!-- ============ PIPELINE ============ -->
+<section class="tab" id="tab-pipeline">
+  <div class="note" style="margin:0 0 14px">Clique num cartão para abrir o programa e mudar o status. O progresso fica salvo neste navegador.</div>
+  <div class="kanban" id="kanban"></div>
+</section>
+
+<!-- ============ FINANCIAMENTO ============ -->
+<section class="tab" id="tab-financiamento">
+  <div class="panel">
+    <h2>Simulador de financiamento <span class="hint">modelo Prodigy Finance — taxa adm. somada ao saldo + juros capitalizando na carência</span></h2>
+    <div class="simgrid">
+      <div>
+        <div class="field">
+          <label>Cenário pronto</label>
+          <select id="fPreset" onchange="applyPreset()">
+            <option value="">— escolher —</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Quanto tomar emprestado (US$) — <span id="fVal"></span></label>
+          <input type="range" id="fEmp" min="0" max="250000" step="1000" value="42000" oninput="calcFin()">
+          <input type="number" id="fEmpN" value="42000" step="1000" oninput="document.getElementById('fEmp').value=this.value;calcFin()" style="margin-top:7px">
+        </div>
+        <div class="field">
+          <label>APR — <span id="fAprV"></span> <span class="tag est">variável</span></label>
+          <input type="range" id="fApr" min="9" max="18" step="0.01" value="13.38" oninput="calcFin()">
+        </div>
+        <div class="field">
+          <label>Prazo</label>
+          <select id="fAnos" onchange="calcFin()">
+            <option value="7">7 anos</option>
+            <option value="10" selected>10 anos</option>
+            <option value="20">20 anos (válvula de emergência)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Meses de carência com juros capitalizando — <span id="fCapV"></span></label>
+          <input type="range" id="fCap" min="0" max="30" step="1" value="18" oninput="calcFin()">
+        </div>
+        <div class="field">
+          <label>Taxa administrativa somada ao saldo (%)</label>
+          <input type="number" id="fAdm" value="4.2" step="0.1" oninput="calcFin()">
+        </div>
+        <div class="field">
+          <label>Salário-base esperado no OPT (US$/ano) — <span id="fSalV"></span></label>
+          <input type="range" id="fSal" min="90000" max="180000" step="1000" value="115000" oninput="calcFin()">
+        </div>
+        <div class="field">
+          <label><input type="checkbox" id="fJur" checked onchange="calcFin()" style="width:auto;margin-right:7px">Descontar o custo jurídico do plano</label>
+          <select id="fJurC" onchange="calcFin()">
+            <option value="17700">Jurídico enxuto — US$ 17.700</option>
+            <option value="28700" selected>Jurídico central — US$ 28.700</option>
+            <option value="42800">Jurídico caro — US$ 42.800</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <div class="out" id="fOut"></div>
+        <div class="verdict" id="fVerdict"></div>
+        <div class="note" id="fNote"></div>
+        <h2 style="font-size:14px;margin:20px 0 10px">Sensibilidade — a taxa é variável, então isto não é acadêmico</h2>
+        <div class="tbl-wrap" style="max-height:none"><table><thead><tr>
+          <th>Cenário</th><th class="num">Toma</th><th class="num">11,06%</th><th class="num">13,38%</th><th class="num">16,00%</th><th class="num">Saldo ao começar a pagar</th>
+        </tr></thead><tbody id="fSens"></tbody></table></div>
+        <div class="note">Esticar de 10 para 20 anos reduz a parcela ~20% e quase dobra o total pago.
+        Só faz sentido como válvula de emergência, nunca como plano.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Bruto ou líquido? <span class="hint">a nota de metodologia — vale para o painel inteiro</span></h2>
+    <div class="grid2">
+      <div>
+        <div class="mh">Já estão LÍQUIDOS de imposto</div>
+        <ul class="tight">
+          <li><strong>Receita no período</strong> e portanto <strong>déficit, dívida e parcela</strong> — stipend
+          e fellowship entram a <strong>0,87 &times; bruto</strong>.</li>
+          <li><strong>Estágio de verão</strong> — US$ 25.000 brutos entram como <strong>US$ 19.500</strong> (fator 0,78).</li>
+          <li><strong>Sobra mensal no OPT</strong> e o <strong>teto de dívida</strong> — calculados com as regras
+          reais de NRA: <strong>isento de FICA, sem standard deduction, tabela de solteiro, mais ~3,5% de imposto
+          estadual</strong>. Não há tratado Brasil–EUA, então não há alívio. A US$ 115.000 brutos: federal
+          US$ 20.447 (17,8%) + estadual US$ 4.025 = líquido US$ 90.528/ano.</li>
+        </ul>
+      </div>
+      <div>
+        <div class="mh">Estão BRUTOS, de propósito</div>
+        <ul class="tight">
+          <li><strong>A coluna "Salário bruto"</strong> na aba Programas — é como as escolas publicam, e trocar
+          por líquido impediria comparar com qualquer outra fonte. Ele é convertido antes de entrar na conta.</li>
+          <li><strong>Os valores de stipend citados no texto</strong> (US$ 20.674 na Walton, US$ 11.172 na Terry,
+          US$ 31k na Broad) — também como publicados. Também convertidos antes de entrar na conta.</li>
+        </ul>
+        <div class="mh">Não têm imposto nenhum</div>
+        <ul class="tight">
+          <li>Custo de vida, tuition, saldo, parcela, custo jurídico — são despesa e dívida, não renda.</li>
+          <li><strong>Isenção de tuition não é contada como receita</strong> — e está certo: ela é bolsa
+          qualificada, não é tributável, e o custo correspondente já sai do outro lado da conta.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="warn"><strong>Duas imprecisões conhecidas, ambas pequenas e ambas a favor do conservadorismo — menos uma:</strong>
+    <br>&bull; <strong>O fator 0,87 é levemente otimista.</strong> Recalculado com as tabelas de 2026, o fator real
+    fica entre <strong>0,851 e 0,865</strong> conforme o valor. Efeito máximo: ~US$ 1.100 a menos de receita no
+    cenário de fellowship mais alto. Não muda nenhum veredito.
+    <br>&bull; <strong>Em Tennessee (Haslam) o 0,87 é conservador</strong>, não otimista: o estado não cobra imposto
+    de renda, então o fator real lá é ~0,90. Os números da Haslam estão subestimados.
+    <br>&bull; <strong>A isenção de FICA expira antes do fim do OPT.</strong> Ela vale pelos 5 primeiros anos-calendário
+    (2028 a 2032). Em 2033 ele vira residente para fins fiscais: entram 7,65% de FICA, mas também entra o standard
+    deduction. Efeito líquido nos ~6 meses finais: <strong>&minus;US$ 2.600</strong>, e o teto cai de US$ 92.872 para
+    <strong>~US$ 90.300</strong>. Nada que mude a decisão — Kelley a US$ 42k segue folgada.</div>
+    <div class="note">O imposto estadual de 3,5% é um <strong>marcador</strong>: a cidade do emprego no OPT ainda é
+    desconhecida, e a dispersão é enorme (Texas e Tennessee 0%; Ohio ~2,75%; Indiana ~3,05% + condado; Geórgia 5,39%;
+    Minnesota 5,35%). E o fator 0,78 do estágio é de <strong>retenção na fonte</strong>, não de imposto devido: numa
+    renda anual baixa, boa parte volta como restituição em abril. O modelo joga fora essa restituição de propósito.</div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h2>O crédito realmente disponível para este perfil</h2>
+      <p class="small" style="max-width:none;color:var(--txt)">Sem cônjuge americano, sem histórico de crédito nos EUA e sem
+      bem em garantia, sobram credores que avaliam <strong>renda futura</strong>, não patrimônio.</p>
+      <ul class="tight">
+        <li><strong>Prodigy Finance</strong> — 11,06% a ~15% APR variável (SOFR + spread ~7,4%), representativo
+        13,38%. Taxa adm. de 4,2% somada ao saldo + US$ 500 à vista. Sem fiador — e não aceita fiador nem se
+        você tiver. <span class="tag cf">Kelley e Broad na lista</span> <span class="tag av">Fisher e Haslam a conferir</span></li>
+        <li><strong>MPOWER</strong> — 10,69% a 16,99% <strong>fixo</strong> (vantagem real), teto US$ 100k.
+        <strong>Mas suspendeu novos empréstimos em 2026</strong>, com lista de espera. Não dá para contar.</li>
+        <li><strong>Linhas da própria escola</strong> — Booth, Kellogg e Fuqua têm linha sem fiador; Ross não tem.
+        Perguntar caso a caso.</li>
+      </ul>
+      <div class="danger"><strong>O limite que ninguém avisa:</strong> o empréstimo é limitado ao
+      <em>cost of attendance</em> certificado pela escola, calculado <strong>só para o estudante</strong>.
+      O custo do cônjuge não é financiável — sobra um buraco de <strong>US$ 20–26 mil</strong> ao longo dos
+      21 meses, que precisa vir de poupança, de bolsa brasileira, ou de J-2/EAD.</div>
+    </div>
+    <div class="panel">
+      <h2>Doação, não dívida — buscar em paralelo</h2>
+      <ul class="tight">
+        <li><strong>Fundação Estudar / Líderes Estudar</strong> — aceita MBA de no mínimo um ano acadêmico
+        completo, cobre até 90%. Inscrições em <strong>agosto</strong>.</li>
+        <li><strong>Fundação Lemann</strong> — bolsa complementar para pós no exterior em universidades
+        parceiras. Inscrições <strong>jan–mar</strong>. <span class="tag av">A verificar se Kelley e Broad são parceiras</span></li>
+      </ul>
+      <p class="note" style="margin-top:14px">São as duas melhores apostas brasileiras e <strong>nenhuma das duas
+      dispara a regra dos 2 anos do 212(e)</strong> — diferente de Fulbright e CAPES, que o projeto evita por
+      princípio.</p>
+      <h2 style="font-size:14px;margin-top:18px">O teste do fracasso</h2>
+      <p class="note" style="margin-top:0">No cenário de volta ao Brasil (R$ 25.000/mês bruto), a sobra é de
+      <strong>~US$ 2.039/mês</strong>. É esse número que define se a parcela é sustentável no pior caso — e é
+      por isso que o teto existe. <strong>Ele transforma um risco de ruína num risco de decepção.</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ J-1 ============ -->
+<section class="tab" id="tab-j1">
+  <div class="cards" id="j1Cards"></div>
+
+  <div class="panel">
+    <h2>A regra, e por que ela quase nunca é o problema</h2>
+    <p>O <strong>22 CFR 62.23</strong> exige apenas que o aluno seja sustentado <em>substancialmente</em> por
+    financiamento de fonte que não seja pessoal ou familiar — na prática, <strong>mais de 50% de fonte
+    não-pessoal</strong>. Uma assistantship da própria universidade satisfaz isso, e o texto federal lista
+    assistantship entre os empregos permitidos ao J-1. <span class="tag cf">Confirmado</span></p>
+    <div class="danger"><strong>Mas o gargalo real não é o regulamento — é a política interna da escola.</strong>
+    Só cerca de 5% dos MBAs internacionais entram em J-1, e tipicamente porque têm patrocinador <strong>externo</strong>
+    (governo ou empresa). Várias universidades restringem o DS-2019 a esses casos mesmo quando o aluno tem
+    assistantship: a Universidade de Miami, por exemplo, afirma explicitamente que assistantship de ensino ou
+    pesquisa <strong>não</strong> basta. <strong>Por isso todas as linhas abaixo estão marcadas como
+    "política a verificar", inclusive as plausíveis.</strong></div>
+    <div class="warn">E para um brasileiro, "patrocinador externo" na prática significa <strong>Fulbright ou
+    CAPES</strong> — exatamente o que este projeto veta, por causa do 212(e). <strong>J-1 com dinheiro da própria
+    universidade é limpo</strong>: o Brasil saiu da Exchange Visitor Skills List em dez/2024, então a regra dos
+    2 anos não é mais disparada pela nacionalidade, só pelo dinheiro de governo.</div>
+  </div>
+
+  <div class="panel">
+    <h2>A pergunta que vale mais que qualquer ranking desta varredura</h2>
+    <p style="font-size:15px;font-style:italic;border-left:3px solid var(--accent);padding-left:14px;color:var(--txt)">
+    "Se eu receber uma graduate assistantship com isenção integral de tuition e stipend, a universidade emite
+    DS-2019 ou apenas I-20? A política de vocês aceita financiamento institucional como base do J-1?"</p>
+    <p class="note" style="margin-top:12px">Se a resposta for <strong>"emitimos DS-2019"</strong>, a esposa trabalha e o
+    programa muda de categoria. Se for <strong>"só I-20"</strong>, você troca a renda dela por 18 meses a mais de
+    trabalho seu. <strong>Nenhuma das duas é obviamente melhor — mas a escolha precisa ser consciente.</strong>
+    Faça essa pergunta primeiro, em todas as escolas, antes de qualquer conversa sobre ranking ou bolsa.</p>
+  </div>
+
+  <div class="tbl-wrap" style="max-height:none"><table><thead><tr>
+    <th>Escola e cenário</th><th>J-1</th><th class="num">Curso</th><th class="num">AT máximo</th>
+    <th class="num">vs. 36 m no F-1</th><th class="num">Ganho J-2 no período</th><th>Por quê</th>
+  </tr></thead><tbody id="j1Body"></tbody></table></div>
+
+  <div class="grid2" style="margin-top:16px">
+    <div class="panel">
+      <h2>O que você troca — o quadro honesto</h2>
+      <div class="tbl-wrap" style="max-height:none"><table><thead><tr><th></th><th>F-1 + MBA STEM</th><th>J-1 + MBA</th></tr></thead><tbody>
+        <tr><td>Trabalho pós-diploma</td><td class="pos"><strong>36 meses</strong> (OPT 12 + STEM OPT 24)</td><td class="neg">18 meses — <strong>ou a duração do curso</strong>, o que for menor</td></tr>
+        <tr><td>Tentativas na loteria H-1B</td><td class="pos"><strong>3</strong></td><td class="neg">1, talvez 2</td></tr>
+        <tr><td>Cônjuge trabalha</td><td class="neg">Não — F-2 é proibido</td><td class="pos"><strong>Sim</strong> — J-2 + EAD</td></tr>
+        <tr><td>Selo STEM serve para quê</td><td class="pos">Destrava os 24 meses extras</td><td class="neg"><strong>Para nada</strong></td></tr>
+        <tr><td>212(e)</td><td>Não se aplica</td><td>Só se o dinheiro for de governo</td></tr>
+        <tr><td>Estágio de verão</td><td>CPT</td><td>AT ou emprego no campus</td></tr>
+      </tbody></table></div>
+      <div class="warn"><strong>A contradição do pedido original.</strong> "MBA STEM + J-1" pede duas coisas que
+      se anulam: o valor do selo STEM é exclusivo do F-1. O que está em jogo de verdade é
+      <strong>36 meses de trabalho para você (F-1) contra a sua esposa poder trabalhar (J-2)</strong>.</div>
+    </div>
+    <div class="panel">
+      <h2>Duas armadilhas do J-1 que não têm saída</h2>
+      <div class="danger"><strong>Não existe cap-gap no J-1.</strong> No F-1, se o H-1B é sorteado, o status
+      estica automaticamente até 1º de outubro. No J-1 esse mecanismo não existe — se o AT acaba em maio e o
+      H-1B só começa em outubro, o buraco é seu.</div>
+      <div class="danger"><strong>Depois do AT são 30 dias de grace period, e acabou.</strong> Recomeçar em um
+      novo J-1 de estudante esbarra na barra de 12 meses para quem passou mais de 6 meses em status J.</div>
+      <h2 style="font-size:14px;margin-top:18px">A extensão STEM do AT — não conte com ela</h2>
+      <p class="note" style="margin-top:0">O Departamento de Estado manteve de 2022 a 2026 uma iniciativa
+      temporária que dava +18 meses de AT em áreas STEM. <strong>Ela venceu em 30/jun/2026 e não foi renovada</strong>
+      — verificado em set/2026: a página oficial continua com a data antiga, e as duas renovações anteriores
+      sempre foram anunciadas <em>antes</em> do vencimento. O padrão quebrou.</p>
+      <p class="note"><strong>E há um detalhe de calendário que reduz muito a importância disso:</strong> o AT
+      seria usado em 2030. Mesmo que renovassem amanhã, teria de ser renovada mais duas vezes até lá.
+      <strong>Não é decidível hoje e não deve orientar a escolha de programa.</strong> Recheque uma única vez,
+      em out/2027, e trate como upside.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FICAR NOS EUA ============ -->
+<section class="tab" id="tab-ficar">
+  <div class="panel">
+    <h2>A cadeia de quatro elos <span class="hint">estimativas do projeto, não são dados publicados</span></h2>
+    <p>Ficar nos EUA não é uma loteria — é uma <strong>cadeia</strong>. E o elo frágil não é a loteria:
+    é o segundo, e ele depende da <strong>função-alvo</strong>, não da escola.</p>
+    <div class="controls">
+      <button class="btn" onclick="preset('cpg')">Alvo CPG / brand management</button>
+      <button class="btn primary" onclick="preset('tech')">Alvo tech product marketing ou agência</button>
+    </div>
+    <div class="chain" id="chainBox"></div>
+    <div class="out" id="chainOut"></div>
+    <div class="field" style="max-width:420px">
+      <label><input type="checkbox" id="cNiw" checked onchange="calcChain()" style="width:auto;margin-right:7px">Contar o EB-2 NIW protocolado no início do OPT</label>
+      <label style="margin-top:8px">P(NIW aprovado) — <span id="cNiwV"></span> <span class="tag ok">48% no geral · 75–85% em casos bem preparados</span></label>
+      <input type="range" id="cNiwP" min="30" max="90" step="1" value="65" oninput="calcChain()">
+    </div>
+    <div class="verdict" id="chainVerdict" style="margin-top:14px"></div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h2>Patrocínio por função — o ranking que decide tudo</h2>
+      <ul class="tight">
+        <li>&#11088; <strong>Tech (product marketing / growth)</strong> — Google, Amazon, Microsoft e Meta
+        patrocinam milhares por ano, e o salário alto ainda melhora a faixa da loteria ponderada.</li>
+        <li>&#11088; <strong>Agências globais</strong> (WPP, Omnicom, Publicis, IPG, Dentsu) — têm estrutura
+        de RH para H-1B, e é o domínio nativo de quem vem de direção de criação.</li>
+        <li>&#10060; <strong>CPG / brand management</strong> — a maioria <strong>não patrocina</strong>.
+        É o alvo intuitivo de um MBA de marketing e é o alvo errado.</li>
+      </ul>
+      <div class="warn"><strong>Corolário prático:</strong> prefira eletivas quantitativas (analytics, growth,
+      martech). Elas garantem o selo STEM <em>e</em> facilitam o enquadramento de <em>specialty occupation</em>,
+      onde "brand strategy" é frágil. E sempre peça à escola a lista de <strong>empregadores que patrocinaram</strong>,
+      não a de recrutadores que apareceram.</div>
+    </div>
+    <div class="panel">
+      <h2>As duas regras que criam desemprego de verdade</h2>
+      <div class="danger"><strong>150 dias agregados de desemprego</strong> — 90 durante o OPT + 60 durante o
+      STEM OPT. Estourou, o status cai. <strong>Não há período de graça de 60 dias no 150º dia.</strong></div>
+      <div class="danger"><strong>O empregador do STEM OPT precisa estar no E-Verify</strong> e assinar o
+      Formulário I-983. Muita agência pequena e boutique criativa não está — o que elimina empregadores que
+      de outra forma contratariam.</div>
+      <h2 style="font-size:14px;margin-top:18px">E se der errado?</h2>
+      <p class="note" style="margin-top:0">Mesmo com fracasso total no H-1B, são <strong>36 meses trabalhando
+      legalmente nos EUA</strong> a US$ 115–145 mil, que quitam sozinhos entre US$ 122 e 187 mil de dívida.
+      O cenário ruim não é "MBA, desemprego e dívida" — é <strong>"MBA, três anos de salário americano,
+      dívida paga, e volta ao Brasil com currículo internacional"</strong>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ JURÍDICO ============ -->
+<section class="tab" id="tab-juridico">
+  <div class="panel">
+    <h2>Custo jurídico do plano inteiro <span class="hint">taxas confirmadas no Form G-1055, ed. 05/29/26 · honorários são faixas de mercado</span></h2>
+    <div class="controls">
+      <label style="color:var(--mut);font-size:12.5px;font-weight:600">Cenário</label>
+      <select id="jCen" onchange="renderJur()">
+        <option value="enxuto">Enxuto — aprovado de primeira, sem premium, sem RFE</option>
+        <option value="central" selected>Central — premium + um RFE + AOS do casal</option>
+        <option value="caro">Caro — EB-1A, escritório de topo, RFE</option>
+      </select>
+      <span class="count" id="jTot"></span>
+    </div>
+    <div class="out" id="jOut"></div>
+    <div class="tbl-wrap" style="max-height:none"><table><thead><tr>
+      <th>Fase</th><th>Honorário</th><th>Taxas de governo e periféricos</th><th class="num">Subtotal</th>
+    </tr></thead><tbody id="jBody"></tbody></table></div>
+    <div class="grid2" style="margin-top:16px">
+      <div>
+        <div class="good"><strong>Duas fases custam zero de honorário.</strong> O F-1 não precisa de advogado.
+        E no H-1B o DOL proíbe repassar honorário e taxas ao trabalhador — derrubaria o salário efetivo abaixo
+        do da LCA. <strong>Empregador que pede para você pagar o H-1B é bandeira vermelha sobre o empregador,
+        não sobre o visto.</strong></div>
+        <div class="warn"><strong>Auto-peticionário não é isento da Asylum Program Fee</strong> — paga a
+        alíquota reduzida de US$ 300. Muita gente descobre no rejeite.</div>
+      </div>
+      <div>
+        <div class="warn"><strong>RFE quase nunca está no flat fee</strong> — US$ 1.500 a 5.000 à parte.
+        Com NIW aprovando 48% no geral, RFE não é exceção, é cenário de trabalho.
+        <strong>Negociar o RFE dentro do flat fee é o ponto de negociação de maior retorno de todo o processo.</strong></div>
+        <div class="danger"><strong>Só attorney licenciado</strong> ou representante credenciado pelo DOJ.
+        "Consultor de imigração" e "despachante" não podem preparar petição nos EUA — é a fraude de
+        <em>notario</em>, e ela contamina o processo inteiro.</div>
+      </div>
+    </div>
+    <div class="note">Perfil não-STEM tende ao <strong>topo</strong> da faixa de honorário do NIW: quem apanha
+    é a primeira ponta do <em>Dhanasar</em> (mérito substancial e importância nacional), e isso é trabalho de
+    redação, não de formulário. Quem cobra US$ 5.000 num caso criativo está subprecificando o esforço — ou não
+    vai fazê-lo.</div>
+  </div>
+</section>
+
+<!-- ============ ROTA ============ -->
+<section class="tab" id="tab-rota">
+  <div class="panel">
+    <h2>Rota 2026 &rarr; 2033 <span class="hint">clique para marcar como feito</span></h2>
+    <div class="bar" id="rotaBar" style="margin-bottom:16px"><div style="width:0%"></div></div>
+    <div class="tl" id="rotaList"></div>
+  </div>
+  <div class="grid2">
+    <div class="panel">
+      <h2>A ideia central da sequência</h2>
+      <p><strong>O NIW não substitui o H-1B — ele remove a dependência dele.</strong></p>
+      <p>Se o H-1B sair, você ajusta em dupla intenção, sem risco. Se não sair, ainda há uma petição própria
+      correndo, que não precisa de empregador nenhum. <strong>Você deixa de ter um único ponto de falha</strong>
+      — que era exatamente o problema da cadeia de quatro elos.</p>
+      <div class="good"><strong>A vantagem brasileira que quase ninguém usa:</strong> EB-1 e EB-2 estão
+      <em>Current</em> para o Brasil. Isso destrava o <strong>filing concorrente</strong> de I-140 + I-485, e com
+      o I-485 pendente saem <strong>EAD e Advance Parole para os dois cônjuges</strong> em ~90–150 dias. É a única
+      configuração mapeada que resolve ao mesmo tempo a esposa sem trabalhar e o buraco de financiamento.</div>
+    </div>
+    <div class="panel">
+      <h2>Os riscos de calendário que mandam na rota</h2>
+      <div class="danger"><strong>Regra de ouro: nada protocolado ou pendente antes da entrevista do F-1 em 2028.</strong>
+      Um I-140 pendente na entrevista consular é o cenário clássico de recusa por 214(b), e 2028 é o momento de
+      vulnerabilidade máxima do plano inteiro. Nenhum ganho de data de prioridade justifica arriscá-lo.</div>
+      <div class="warn"><strong>A fila brasileira não é permanente.</strong> O EB-2 "All Chargeability"
+      retrogrediu duas vezes em 2023 (abr &rarr; jul/2022; mai &rarr; fev/2022) antes de voltar a Current.
+      O que se compra ao protocolar é a <strong>data de prioridade</strong>.</div>
+      <div class="warn"><strong>O I-485 da esposa precisa ser concorrente.</strong> Se o dele for aprovado antes,
+      ela perde a condição de derivada e cai em processamento consular — 18 a 24 meses sem poder trabalhar.</div>
+      <p class="note"><strong>Riscos regulatórios em observação:</strong> revisão do OPT/STEM OPT pelo DHS
+      (carta de 09/jan/2026) — é o risco que pode zerar a tese desta varredura; regra de <em>Duration of Status</em>
+      (efetiva 15/set/2026); NPRM do Exchange Visitor Program (30/jul/2026); loteria H-1B ponderada por salário
+      a partir de 27/fev/2026.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PENDÊNCIAS ============ -->
+<section class="tab" id="tab-pendencias">
+  <div class="panel">
+    <h2>Pendências da varredura <span class="hint">clique para marcar</span></h2>
+    <div class="bar" id="pendBar" style="margin-bottom:16px"><div style="width:0%"></div></div>
+    <div id="pendList"></div>
+  </div>
+</section>
+
+<!-- ============ MODAL ============ -->
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal"></div>
+</div>
+
+</div>
+<script>
+/* ==================== DADOS ==================== */
+/* Varredura de set/2026. Cada linha é um CENÁRIO de financiamento, não uma escola —
+   a dispersão dentro de uma mesma escola é maior que a dispersão entre escolas. */
+const P = [
+  {id:"broad-topo", inst:"Michigan State — Broad", cid:"East Lansing, MI", mes:21,
+   cen:"Fellowship de topo (US$ 31k) + isenção de tuition",
+   stem:"sim", stemT:"MBA inteiro STEM-designado", stemC:"Confirmado",
+   custo:61775, rec:73440, def:11665, sal:null, salT:"não publicado por escola nesta varredura",
+   fin:"Fellowships de mérito com isenção; internacionais elegíveis a confirmar por escrito", finC:"A verificar",
+   mkt:"Marketing existe como concentração", col:"Mercado do Meio-Oeste; Detroit e Chicago",
+   obs:"Único cenário da varredura com sobra de caixa. Depende de ganhar o prêmio mais competitivo da escola — não é o resultado esperado, é o melhor caso.",
+   j1:{t:"forte", at:18, txt:"Isenção de tuition somada a fellowship institucional de US$ 31k é exatamente a configuração que o 22 CFR 62.23 contempla — o financiamento não-pessoal passa dos 50% com folga. A trava aqui não é o regulamento, é a política interna da escola sobre emitir DS-2019 com dinheiro próprio."},
+   pend:["Confirmar o código CIP do marketing (pedir o código, não a afirmação)","Confirmar por escrito que internacionais são elegíveis a fellowship/assistantship","Perguntar se a escola emite DS-2019 com base em financiamento institucional, ou só I-20","Confirmar se está na lista do Prodigy para o intake Fall 2028"]},
+
+  {id:"kelley-cash", inst:"Indiana — Kelley", cid:"Bloomington, IN", mes:21,
+   cen:"Tuition integral + Global Fellowship LatAm em dinheiro (US$ 30k)",
+   stem:"sim", stemT:"Major de Marketing STEM-designado — sem pathway, sem contar créditos", stemC:"Confirmado",
+   custo:60725, rec:71700, def:10975, sal:145000, salT:"mediana de base; comp. inicial média >US$ 167k; 93% empregados na formatura",
+   fin:"Fellowships de US$ 10k até tuition integral, cobrindo mais da metade dos admitidos", finC:"Confirmado",
+   mkt:"Consumer Marketing Academy + Bloomington Brands (empresa de brand management operada por alunos)",
+   col:"O melhor retorno da varredura. Recrutadores: P&G, General Mills, Target, Amazon, Ford",
+   obs:"O acerto mais exato do pedido original: STEM de verdade no major de marketing, e não por eletiva. Este cenário só existe se a Global Fellowship for dinheiro e não abatimento de tuition — fontes secundárias divergem entre US$ 25k e US$ 35k.",
+   j1:{t:"forte", at:18, txt:"Tuition integral mais US$ 30k em dinheiro institucional passa folgado no teste dos 50%. Mas a condicional é dupla: a Global Fellowship precisa ser dinheiro (e não crédito de tuition) E a Kelley precisa emitir DS-2019 sobre financiamento próprio. Duas perguntas, uma ligação."},
+   pend:["Confirmar se a Global Fellowship LatAm é dinheiro ou crédito de tuition, e o valor real","Perguntar se a escola emite DS-2019 com base em financiamento institucional, ou só I-20","Confirmar se a Kelley é parceira da Fundação Lemann"]},
+
+  {id:"fisher", inst:"Ohio State — Fisher", cid:"Columbus, OH", mes:21,
+   cen:"Leadership Fellow",
+   stem:"parcial", stemT:"Designação a confirmar para a trilha de marketing", stemC:"A verificar",
+   custo:66325, rec:53430, def:-12895, sal:122500, salT:"mediana de base + US$ 27.500 de bônus; 92% domésticos e 78% internacionais empregados em 3 meses",
+   fin:"Leadership Fellow com stipend — valor não publicado", finC:"A verificar",
+   mkt:"Marketing é área estabelecida", col:"Columbus; mercado corporativo do Meio-Oeste",
+   obs:"Passa no teste com folga (24%). O gap entre 92% domésticos e 78% internacionais empregados é o dado mais honesto que uma escola publicou nesta varredura — use-o como âncora de expectativa.",
+   j1:{t:"medio", at:18, txt:"Indeterminado por falta de dado, não por fraqueza: o Leadership Fellow tem stipend, mas a escola não publica nem o valor nem se vem com isenção de tuition. Sem isso não dá para calcular os 50%. É a primeira coisa a perguntar aqui, e ela decide junto o cenário de F-1 e o de J-1."},
+   pend:["Confirmar o valor do stipend do Leadership Fellow (não é publicado) e se vem com isenção de tuition","Confirmar por escrito a elegibilidade de internacionais","Perguntar se a escola emite DS-2019 com base em financiamento institucional, ou só I-20","Confirmar designação STEM e o CIP da trilha de marketing","Confirmar se está na lista do Prodigy"]},
+
+  {id:"broad-med", inst:"Michigan State — Broad", cid:"East Lansing, MI", mes:21,
+   cen:"Fellowship mediana (~US$ 15k) + isenção",
+   stem:"sim", stemT:"MBA inteiro STEM-designado", stemC:"Confirmado",
+   custo:61775, rec:45600, def:-16175, sal:null, salT:"não publicado por escola nesta varredura",
+   fin:"Fellowship de mérito de valor mediano", finC:"Estimado",
+   mkt:"Marketing existe como concentração", col:"Mercado do Meio-Oeste",
+   obs:"Fica exatamente no limite do teste (35%). É o cenário mais provável da Broad — o de topo é a exceção, não a regra. Com dívida, é confortável.",
+   j1:{t:"forte", at:18, txt:"Mesmo com fellowship mediana, a isenção de tuition sozinha já domina o numerador dos 50% — a aritmética do J-1 aguenta um prêmio menor bem melhor do que a aritmética do F-1 aguenta. Este é o cenário em que o J-1 mais compensa: bolsa menor, mas a esposa trabalhando."},
+   pend:["Confirmar a distribuição real dos valores de fellowship, não só o teto","Perguntar se a escola emite DS-2019 com base em financiamento institucional, ou só I-20"]},
+
+  {id:"haslam", inst:"Tennessee — Haslam", cid:"Knoxville, TN", mes:16,
+   cen:"Assistantship (isenção + stipend)",
+   stem:"sim", stemT:"MBA inteiro STEM-designado, sem risco de eletiva", stemC:"Confirmado",
+   custo:51600, rec:31100, def:-20500, sal:115000, salT:"base média",
+   fin:"Assistantship de pesquisa/ensino, 10h/semana, consideração automática — mas a própria página avisa que são altamente competitivas e que nem todos recebem", finC:"A verificar",
+   mkt:"Uma das concentrações mais fortes e reconhecidas da escola",
+   col:"86% ficam no Sul — mercado regional, com menos patrocinador de visto",
+   obs:"STEM limpo e marketing forte, mas a conta não fecha sem dívida e o mercado é regional. Os 86% no Sul são o dado que mais pesa contra: patrocínio de visto se concentra fora dessa região.",
+   j1:{t:"forte", at:16, txt:"Assistantship com isenção mais stipend é a base clássica de DS-2019 — e assistantship é emprego expressamente permitido ao J-1 no próprio texto federal. O problema é o outro teto: 16 meses de curso significam 16 meses de AT, não 18. Você perde dois meses antes de começar."},
+   pend:["Confirmar o valor do stipend do assistantship (não é publicado)","Perguntar se a escola emite DS-2019 com base em financiamento institucional, ou só I-20","Confirmar se está na lista do Prodigy"]},
+
+  {id:"walton", inst:"Arkansas — Walton", cid:"Fayetteville, AR", mes:11,
+   cen:"Isenção integral + stipend de US$ 20.674",
+   stem:"nao", stemT:"A escola não publica designação STEM", stemC:"A verificar",
+   custo:30983, rec:17987, def:-12996, sal:null, salT:"92% empregados em 90 dias",
+   fin:"Isenção integral + stipend, 20h/semana, internacionais explicitamente elegíveis, consideração automática — o financiamento mais acessível da varredura", finC:"Confirmado",
+   mkt:"Fraco — existe como eletivas (Retail Marketing), não como major",
+   col:"Walmart, Tyson, PepsiCo, McCormick, Deloitte. Bentonville é o maior ecossistema de shopper marketing de fornecedores do país, e é subestimado",
+   obs:"Menor déficit absoluto de toda a lista (US$ 13k) e ainda assim reprova no teste percentual, porque não há verão para diluir. Defeito estrutural: MBA de 1 ano não tem estágio de verão no meio — e o estágio é o mecanismo padrão pelo qual o internacional converte em oferta full-time. Para quem quer ficar, 1 ano é pior que 2 mesmo custando menos.",
+   j1:{t:"forte", at:11, txt:"A melhor aritmética de J-1 da varredura inteira: isenção integral mais stipend de US$ 20.674, internacionais explicitamente elegíveis e consideração automática para todo admitido. E, ao mesmo tempo, o pior teto de Academic Training — 11 meses de curso dão 11 meses de AT. É a contradição mais nítida da lista: o programa que mais facilmente sustenta um DS-2019 é o que menos entrega tempo de trabalho depois."},
+   pend:["Confirmar se o MBA é STEM e se há trilha de marketing além de eletivas de varejo","Perguntar se a escola emite DS-2019 com base em financiamento institucional, ou só I-20"]},
+
+  {id:"terry", inst:"UGA — Terry", cid:"Athens, GA", mes:21,
+   cen:"Graduate assistantship (até 90% da turma recebe)",
+   stem:"nao", stemT:"Não confirmado para o MBA de dois anos. O Pathway MBA for STEM Majors é outra coisa — é para bacharéis em STEM, não é designação STEM do MBA", stemC:"A verificar",
+   custo:62300, rec:38940, def:-23360, sal:150000, salT:"média + US$ 29.000 de bônus; 92% empregados em 3 meses",
+   fin:"Tuition reduzido a US$ 25 por semestre + 50% do prêmio de seguro (só o estudante) + stipend de ~US$ 11.172 por 10 meses, 13h/semana", finC:"Confirmado",
+   mkt:"Marketing estabelecido", col:"O melhor retorno do tier público",
+   obs:"O melhor salário da varredura junto com a Kelley, e o pior gap por dólar: stipend de US$ 11k contra custo de casal de US$ 35,6k. A cobertura de assistantship é quase universal, mas o valor é baixo demais para sustentar duas pessoas.",
+   j1:{t:"forte", at:18, txt:"O mais PROVÁVEL da varredura, não só o mais possível: até 90% da turma recebe a assistantship, então a base do DS-2019 quase não depende de ganhar competição. Tuition a US$ 25 por semestre é isenção de fato, e a isenção sozinha resolve os 50%. O stipend de US$ 11k é baixo para o F-1 — mas no J-1 ele deixa de precisar sustentar duas pessoas sozinho."},
+   pend:["Confirmar se o MBA de dois anos tem designação STEM e qual o CIP","Perguntar se a escola emite DS-2019 com base em financiamento institucional, ou só I-20"]},
+
+  {id:"wisconsin", inst:"Wisconsin", cid:"Madison, WI", mes:21,
+   cen:"Bolsa ano 1 + graduate assistantship ano 2",
+   stem:"nao", stemT:"STEM existe em Operations & Technology Management e Supply Chain — NÃO em Brand & Product Management", stemC:"A verificar",
+   custo:73850, rec:41250, def:-32600, sal:null, salT:"#1 em menor endividamento médio entre MBAs de topo",
+   fin:"100% dos elegíveis receberam bolsa na turma 2023-25 (média de 93% do tuition do 1º ano); 71% conseguem assistantship no 2º ano — 100% do tuition + stipend de US$ 20–30k + seguro", finC:"Confirmado",
+   mkt:"A melhor marca de marketing de MBA do país por concentração: o centro de Brand & Product Management é referência histórica (Kraft Heinz, General Mills, Kohler)",
+   col:"Forte em CPG — que é justamente o setor que menos patrocina visto",
+   obs:"Dois problemas fatais. O STEM não cobre marketing, que é exatamente o que se quer aqui. E o stipend só chega no 2º ano: o 1º ano tem tuition coberto e ZERO de renda. Madison ainda é a cidade mais cara da lista curta.",
+   j1:{t:"medio", at:18, txt:"Aqui o problema é de calendário, não de valor. O DS-2019 é emitido na ENTRADA, e no 1º ano existe bolsa de tuition mas ZERO de stipend — a assistantship só chega no 2º ano. O sponsor avalia o que está documentado no início, então a configuração forte aparece tarde demais para sustentar o pedido."},
+   pend:["Confirmar se Wisconsin estendeu a designação STEM a Brand & Product Management desde 2016","Perguntar se a bolsa do 1º ano basta para DS-2019, já que o stipend só chega no 2º ano"]},
+
+  {id:"kelley-tuit", inst:"Indiana — Kelley", cid:"Bloomington, IN", mes:21,
+   cen:"Só tuition integral, sem dinheiro",
+   stem:"sim", stemT:"Major de Marketing STEM-designado", stemC:"Confirmado",
+   custo:60725, rec:19500, def:-41225, sal:145000, salT:"mediana de base; 93% empregados na formatura",
+   fin:"Fellowship de mérito cobrindo tuition integral", finC:"Confirmado",
+   mkt:"Consumer Marketing Academy + Bloomington Brands",
+   col:"O melhor retorno da varredura",
+   obs:"Reprova feio no teste de 30% e mesmo assim é a recomendação nº 1 depois do reenquadramento pela dívida. O déficit de US$ 41k vira saldo de ~US$ 53k e parcela de ~US$ 810/mês — muito abaixo do teto, contra o melhor salário e a melhor colocação da lista. É a melhor relação dívida/retorno mapeada.",
+   j1:{t:"medio", at:18, txt:"Aritmeticamente passa: a isenção de tuition integral é institucional e supera o resto do custo. Mas o sponsor vê um aluno cuja vida inteira sai de empréstimo — que conta como fundo PESSOAL — e essa leitura costuma travar o DS-2019 mesmo quando a conta fecha. Bolsa de tuition sem stipend é o caso mais recusado."},
+   pend:["Confirmar o código CIP do major de marketing","Perguntar se a escola emite DS-2019 com bolsa de tuition sem stipend","Confirmar o COA certificado, que é o teto do empréstimo"]},
+
+  {id:"elite", inst:"Carlson · Simon · elite", cid:"Minneapolis e outras", mes:21,
+   cen:"Só bolsa de tuition, sem stipend",
+   stem:"parcial", stemT:"Carlson via Management Science MBA — arquitetura por eletiva, o risco fica com o aluno", stemC:"Confirmado",
+   custo:66000, rec:19500, def:-46500, sal:null, salT:"—",
+   fin:"Apenas bolsas de mérito, sem stipend sistemático. Tuition internacional da Carlson: US$ 62.280/ano", finC:"Confirmado",
+   mkt:"Carlson tem o Brand Enterprise, um dos melhores laboratórios de brand management do país",
+   col:"Minneapolis é provavelmente o melhor mercado local de brand management dos EUA: Target, General Mills, 3M, Best Buy, Cargill",
+   obs:"Grupo mantido na lista pelo mérito de marketing, não pela conta. Sem bolsa, a dívida estoura o teto e o plano passa a depender de ganhar o H-1B — que é o que a regra do teto existe para evitar.",
+   j1:{t:"fraco", at:18, txt:"Bolsa parcial de mérito, sem stipend, contra tuition de US$ 62.280/ano. O financiamento não-pessoal provavelmente não chega aos 50%, e o resto viria de empréstimo — que é fundo pessoal. Aqui o J-1 falha no próprio regulamento, antes mesmo de chegar na política da escola."},
+   pend:["Levantar custo de vida do casal em Minneapolis pela metodologia do projeto (hoje é estimado)"]},
+
+  /* --- Varredura dos seis estados pedidos (set/2026): AZ, WA, OR, AL, VA, NC --- */
+
+  {id:"darden-jeff", inst:"Virginia — Darden", cid:"Charlottesville, VA", mes:21,
+   cen:"Jefferson Fellowship — tuition, taxas, seguro e US$ 20k/ano de stipend",
+   stem:"sim", stemT:"MBA inteiro STEM-certificado desde a turma de 2026", stemC:"Confirmado",
+   custo:78925, rec:54300, def:-24625, sal:175000, salT:"mediana de base + US$ 30.000 de bônus; mantida cinco anos seguidos",
+   fin:"Tuition e taxas integrais, seguro-saúde, US$ 20.000/ano de custo de vida e mais US$ 7.000 para notebook, pesquisa e aprendizado global. Internacionais explicitamente convidados a concorrer pela rodada Early Action", finC:"Confirmado",
+   mkt:"Marketing/vendas levou 7,2% da turma de 2025 — proporção pequena, e o salário por função não é publicado",
+   col:"98% da turma de 2025 empregada nos EUA",
+   obs:"O melhor pacote de financiamento de toda a varredura e a menor probabilidade de todas. São ~7 bolsistas de MBA por turma, num concurso global que exige candidatura na Early Action ou na 1ª rodada. Não é plano — é bilhete premiado com aritmética excepcional: déficit de US$ 24,6k vira parcela de ~US$ 475/mês contra mediana de US$ 175 mil, ou 7% da sobra mensal. A melhor razão dívida/retorno já mapeada no projeto.",
+   j1:{t:"forte", at:18, txt:"A configuração de J-1 mais limpa encontrada em qualquer estado. Dinheiro institucional cobre tuition, taxas, seguro E custo de vida — o financiamento pessoal é praticamente zero e o teste dos 50% do 22 CFR 62.23 não chega nem perto de apertar. E o programa de 21 meses preserva o teto de 18 meses de Academic Training, que a Walton não preserva. Resta a dúvida de sempre: a Darden emite DS-2019 sobre financiamento próprio?"},
+   pend:["Confirmar se a Jefferson Fellowship é renovável nos dois anos ou é prêmio de ano único","Confirmar quantas bolsas de MBA são concedidas por turma","Perguntar se a Darden emite DS-2019 com base em financiamento institucional","Levantar custo de vida do casal em Charlottesville pela metodologia do projeto"]},
+
+  {id:"darden-merito", inst:"Virginia — Darden", cid:"Charlottesville, VA", mes:21,
+   cen:"Bolsa de mérito comum, sem stipend",
+   stem:"sim", stemT:"MBA inteiro STEM-certificado", stemC:"Confirmado",
+   custo:78925, rec:19500, def:-59425, sal:175000, salT:"mediana de base + US$ 30.000 de bônus",
+   fin:"Oculus e Batten cobrem tuition integral, mas sem dinheiro de custo de vida. A maioria dos admitidos recebe abatimento parcial", finC:"Confirmado",
+   mkt:"Mesma escola, mesmo currículo — o que muda é só o dinheiro",
+   col:"98% empregados nos EUA",
+   obs:"O cenário realista da Darden, e ele não fecha bem. Charlottesville é a cidade mais cara das seis pesquisadas depois de Seattle: US$ 1.845 de aluguel de 1 quarto. Sem stipend, o déficit de US$ 59k vira parcela de ~US$ 1.146/mês — 16% da sobra, o mesmo peso relativo do Kelley, mas com US$ 76k de saldo contra US$ 53k. Cabe no teto, e é o limite dele.",
+   j1:{t:"fraco", at:18, txt:"Mesmo problema do Kelley sem dinheiro, agravado pelo custo da cidade: a isenção de tuition passa na aritmética, mas a vida inteira do casal sai de empréstimo, que conta como fundo pessoal. É o caso que os sponsors mais recusam."},
+   pend:["Confirmar o valor típico da bolsa de mérito para internacionais","Levantar custo de vida do casal em Charlottesville pela metodologia do projeto"]},
+
+  {id:"ncstate-ga", inst:"NC State — Jenkins", cid:"Raleigh, NC", mes:21,
+   cen:"Graduate Assistantship — tuition, seguro e US$ 3.100/semestre",
+   stem:"sim", stemT:"MBA inteiro STEM-designado desde 2020 — sem pathway, sem contar créditos", stemC:"Confirmado",
+   custo:65450, rec:30288, def:-35162, sal:100695, salT:"mediana de base + US$ 20.000 de bônus de assinatura",
+   fin:"Assistantship de 15–20h/semana com tuition total ou parcial, seguro-saúde e stipend de US$ 3.100/semestre. Exclusiva de alunos em tempo integral, exige GPA 3,0 e 9+ créditos por semestre", finC:"Confirmado",
+   mkt:"Poole tem departamento de Marketing, mas a colocação da escola é em tecnologia, serviços financeiros e manufatura",
+   col:"Campus no centro de Raleigh, dentro do Research Triangle",
+   obs:"O melhor achado da Carolina do Norte na prática, não no papel. MBA inteiro STEM — a arquitetura mais segura que existe — somado a uma assistantship com seguro e stipend, que é justamente o que dá base a um DS-2019. O problema é o tamanho do stipend: US$ 3.100 por semestre são US$ 12,4 mil em dois anos, longe dos US$ 30k do Kelley. Déficit de US$ 35k contra mediana de US$ 100,7k dá parcela de ~US$ 678/mês, ou 27% da sobra — quase o dobro do peso relativo do Kelley.",
+   j1:{t:"medio", at:18, txt:"Assistantship de serviço com tuition, seguro e stipend é exatamente a estrutura que o 22 CFR 62.23 contempla, e é melhor que bolsa pura porque há contrapartida de trabalho. A fragilidade é a suficiência: US$ 3.100/semestre podem não convencer o sponsor de que há recursos adequados para o casal, e o resto viria de empréstimo. Passa na origem do dinheiro, tropeça no valor."},
+   pend:["Confirmar se a assistantship cobre a tuition de fora do estado (US$ 95.680 no programa) ou só a parcela de residente","Confirmar por escrito que internacionais são elegíveis à assistantship","Perguntar se a escola emite DS-2019 com base na assistantship","Levantar custo de vida do casal em Raleigh pela metodologia do projeto"]},
+
+  {id:"unc-tuit", inst:"UNC — Kenan-Flagler", cid:"Chapel Hill, NC", mes:21,
+   cen:"Fellowship de mérito com tuition integral, sem stipend",
+   stem:"sim", stemT:"MBA inteiro STEM-designado, com concentração de marketing disponível", stemC:"Confirmado",
+   custo:71575, rec:19500, def:-52075, sal:139637, salT:"média de base + US$ 32.558 de bônus médio",
+   fin:"Fellowships de mérito para ~50% da turma, internacionais elegíveis, sem exigência de necessidade financeira. Valor médio não publicado", finC:"Confirmado",
+   mkt:"Concentração de marketing dentro de um MBA inteiramente STEM — a arquitetura ideal",
+   col:"1 em cada 4 alunos é internacional",
+   obs:"A melhor escola do estado preferido, e a conta não é amigável. Chapel Hill custa US$ 1.495 de aluguel e a fellowship, quando vem, é abatimento de tuition — não dinheiro. Déficit de US$ 52k vira parcela de ~US$ 1.004/mês contra média de US$ 139,6k: 21% da sobra. Cabe no teto, perde para o Kelley em todos os eixos financeiros e ganha em marca e em preferência pessoal.",
+   j1:{t:"fraco", at:18, txt:"Fellowship de tuition sem stipend, com valor médio sequer publicado. Mesmo padrão do Kelley sem dinheiro: aritmética plausível, leitura de sponsor desfavorável. E como o valor da bolsa é desconhecido, nem a aritmética está garantida."},
+   pend:["Pedir o valor médio e máximo da fellowship para internacionais","Perguntar se a escola emite DS-2019 com base em financiamento institucional","Levantar custo de vida do casal em Chapel Hill pela metodologia do projeto"]},
+
+  {id:"fuqua-tuit", inst:"Duke — Fuqua", cid:"Durham, NC", mes:21,
+   cen:"Fellowship de mérito com tuition integral, sem stipend",
+   stem:"sim", stemT:"Daytime MBA inteiro STEM-designado — todos os formandos", stemC:"Confirmado",
+   custo:68600, rec:19500, def:-49100, sal:175000, salT:"faixa de mediana de escola de topo — a verificar no relatório oficial",
+   fin:"Bolsas de mérito e fellowships com consideração automática no processo. Prêmios de tuition integral existem e são raros", finC:"A verificar",
+   mkt:"Marketing está no núcleo do currículo; a escola não publica salário por função",
+   col:"Durham é a cidade mais barata do Research Triangle entre as três pesquisadas",
+   obs:"No papel é a melhor razão dívida/retorno da varredura depois da Jefferson: parcela de ~US$ 947/mês contra US$ 175 mil dá 14% da sobra, batendo os 16% do Kelley. Na prática o condicional é pesado — bolsa de tuition integral na Fuqua é rara, e o custo de vida de Durham aqui é estimado, não levantado. Trate como hipótese a testar, não como resultado.",
+   j1:{t:"fraco", at:18, txt:"Mesma estrutura frágil de bolsa de tuition sem stipend. E numa escola privada de topo a política de DS-2019 costuma ser ainda mais restritiva — o padrão é I-20 com comprovação de fundos."},
+   pend:["Confirmar a mediana de base da Fuqua no relatório de emprego oficial","Confirmar se existem bolsas de tuition integral e quantas","Levantar custo de vida do casal em Durham pela metodologia do projeto"]},
+
+  {id:"asu-ga", inst:"Arizona State — W. P. Carey", cid:"Tempe, AZ", mes:21,
+   cen:"Bolsa de tuition integral + Graduate Assistantship com stipend",
+   stem:"sim", stemT:"Full-time MBA inteiro STEM-designado, com concentração de marketing", stemC:"Confirmado",
+   custo:67550, rec:36900, def:-30650, sal:100000, salT:"mediana de base + US$ 15.000 de bônus; média inicial citada em US$ 126.618 — fontes divergem",
+   fin:"Mais de 95% dos admitidos em tempo integral recebem bolsa, muitos com 100% da tuition. A assistantship soma stipend, remissão da tuition de fora do estado, redução de 100% da tuition de residente e seguro-saúde básico", finC:"Confirmado",
+   mkt:"Marketing é uma das nove concentrações do programa",
+   col:"Phoenix é mercado grande, mas a escola não publica taxa de colocação de internacionais",
+   obs:"O achado do Arizona, e o único dos seis estados que reproduz a estrutura do Kelley com dinheiro: bolsa quase universal somada a uma assistantship que traz stipend E seguro. O valor do stipend não é publicado — esta linha assume US$ 10 mil/ano, que é hipótese, não dado. Se o número real for menor, o cenário desce rápido.",
+   j1:{t:"medio", at:18, txt:"Assistantship com stipend, remissão de tuition e seguro é base sólida para o teste dos 50%. O problema é que o valor do stipend é desconhecido — sem ele não dá para afirmar que cobre o casal, e a suficiência de recursos é metade do que o sponsor avalia."},
+   pend:["Pedir o valor exato do stipend da Graduate Assistantship do MBA em tempo integral","Confirmar que internacionais são elegíveis à assistantship e à bolsa integral","Perguntar se a escola emite DS-2019 com base na assistantship","Confirmar a mediana de base no relatório oficial — as fontes divergem entre US$ 100k e US$ 126,6k","Levantar custo de vida do casal em Tempe pela metodologia do projeto"]},
+
+  {id:"asu-tuit", inst:"Arizona State — W. P. Carey", cid:"Tempe, AZ", mes:21,
+   cen:"Só bolsa de tuition integral, sem assistantship",
+   stem:"sim", stemT:"Full-time MBA inteiro STEM-designado", stemC:"Confirmado",
+   custo:67550, rec:19500, def:-48050, sal:100000, salT:"mediana de base + US$ 15.000 de bônus",
+   fin:"Bolsa de tuition integral, sem dinheiro de custo de vida", finC:"Confirmado",
+   mkt:"Marketing como concentração",
+   col:"Mercado de Phoenix",
+   obs:"O cenário provável da ASU, já que a bolsa é quase universal mas a assistantship é competitiva. Déficit de US$ 48k contra mediana de US$ 100 mil dá parcela de ~US$ 927/mês, ou 38% da sobra — a pior relação entre os cenários que cabem no teto. Aqui o problema é o salário, não a dívida.",
+   j1:{t:"fraco", at:18, txt:"Bolsa de tuition sem stipend: o padrão mais recusado da lista inteira."},
+   pend:["Confirmar a mediana de base no relatório oficial","Levantar custo de vida do casal em Tempe pela metodologia do projeto"]},
+
+  {id:"auburn-ga", inst:"Auburn — Harbert", cid:"Auburn, AL", mes:21,
+   cen:"Graduate Assistantship com isenção de tuition e stipend mensal",
+   stem:"nao", stemT:"Designação STEM não localizada nas fontes públicas da escola", stemC:"A verificar",
+   custo:63350, rec:19500, def:-43850, sal:null, salT:"fontes divergem de forma absurda — de US$ 54,3k a US$ 136k. Nenhuma confiável",
+   fin:"Assistantship com isenção de tuition parcial ou integral mais stipend mensal, 10–14h/semana. Valor do stipend não publicado. Tuition de fora do estado: US$ 66.220 no programa", finC:"A verificar",
+   mkt:"Marketing não aparece como concentração destacada",
+   col:"Mercado local pequeno; a escola não publica relatório de emprego detalhado",
+   obs:"Entra na lista pela estrutura do financiamento, não pelo mérito. A assistantship pode chegar a isenção integral com stipend, que é a configuração certa — mas nada disso está publicado, a designação STEM não foi encontrada e os dados de salário são inutilizáveis. Esta linha assume stipend zero por falta de dado: é piso, não estimativa. Só vale telefonema se as opções melhores não avançarem.",
+   j1:{t:"medio", at:18, txt:"Indeterminado, não frágil: se a isenção for integral e o stipend for real, a estrutura serve. Sem o valor do stipend e sem a política de DS-2019, não há o que classificar."},
+   pend:["Pedir o valor do stipend da assistantship do MBA e se a isenção é integral","Confirmar se o MBA da Harbert tem designação STEM e qual o CIP","Pedir o relatório de emprego oficial — os dados públicos são contraditórios","Levantar custo de vida do casal em Auburn pela metodologia do projeto"]},
+
+  /* --- Varredura dos oito estados pedidos (set/2026): IL, RI, MA, TX, CA, SC, PA, FL --- */
+
+  {id:"rice-integral", inst:"Rice — Jones", cid:"Houston, TX", mes:21,
+   cen:"Bolsa de mérito com tuition integral",
+   stem:"sim", stemT:"Rice designou TODOS os mestrados como STEM, MBA incluído — programa inteiro", stemC:"Confirmado",
+   custo:66500, rec:19500, def:-47000, sal:150000, salT:"mediana de base + US$ 30.000 de bônus; média inicial também US$ 150.000",
+   fin:"96% dos alunos em tempo integral recebem bolsa de mérito, com prêmio médio de US$ 81.000. Tuition: US$ 79.116/ano", finC:"Confirmado",
+   mkt:"Marketing existe no currículo; recrutadores de topo são Amazon, McKinsey, Deloitte, J.P. Morgan e Phillips 66",
+   col:"Houston é mercado grande e a cidade mais barata entre as grandes metrópoles pesquisadas",
+   obs:"O melhor achado dos oito estados, e empata com o Kelley na métrica que decide: 15% da sobra mensal. Ganha em dois eixos — MBA inteiro STEM (a arquitetura mais segura) e Texas não cobra imposto de renda, o que vale ~US$ 5.250/ano a mais de sobra durante o OPT se ele ficar no estado. ⚠️ O empate depende de bolsa de tuition INTEGRAL: o prêmio médio é US$ 81 mil contra US$ 158 mil de tuition, ou seja, cerca de metade. A linha ao lado mostra o que acontece com a média.",
+   j1:{t:"fraco", at:18, txt:"Bolsa de tuition sem stipend — o mesmo padrão frágil do Kelley sem dinheiro. E escola privada de topo costuma ter política de DS-2019 mais restritiva ainda; o padrão é I-20 com comprovação de fundos."},
+   pend:["Confirmar a distribuição dos prêmios: quantos recebem tuition integral e não a média de US$ 81k","Confirmar que internacionais concorrem às bolsas em igualdade","Pedir o CIP do MBA","Levantar custo de vida do casal em Houston pela metodologia do projeto"]},
+
+  {id:"rice-media", inst:"Rice — Jones", cid:"Houston, TX", mes:21,
+   cen:"Bolsa média de US$ 81k contra US$ 158k de tuition",
+   stem:"sim", stemT:"MBA inteiro STEM", stemC:"Confirmado",
+   custo:143500, rec:19500, def:-124000, sal:150000, salT:"mediana de base + US$ 30.000 de bônus",
+   fin:"Prêmio médio de US$ 81.000 no programa, contra tuition total de ~US$ 158.000. Sobram ~US$ 77.000 de tuition a pagar", finC:"Confirmado",
+   mkt:"Mesma escola, mesmo currículo",
+   col:"Mesmo mercado",
+   obs:"O cenário estatisticamente provável da Rice, e ele estoura o teto. O custo aqui inclui os ~US$ 77 mil de tuition não coberta somados ao custo de vida do casal: dívida de US$ 124 mil contra teto de ~US$ 90 mil, parcela de ~US$ 2.391/mês, 40% da sobra. É o retrato exato do que a revisão do teto pela conta jurídica eliminou — bolsa parcial em escola cara.",
+   j1:{t:"fraco", at:18, txt:"Com metade da tuition saindo de empréstimo, o financiamento não-pessoal provavelmente nem chega aos 50%. Falha no próprio regulamento, antes da política da escola."},
+   pend:["Confirmar a mediana e a distribuição real dos prêmios da Rice"]},
+
+  {id:"tepper-integral", inst:"Carnegie Mellon — Tepper", cid:"Pittsburgh, PA", mes:21,
+   cen:"Bolsa de mérito com tuition integral (ex.: William Larimer Mellon)",
+   stem:"sim", stemT:"MBA inteiro STEM-designado", stemC:"Confirmado",
+   custo:71750, rec:19500, def:-52250, sal:150000, salT:"faixa de escola de topo — a verificar no relatório oficial",
+   fin:"Bolsas nomeadas, incluindo a William Larimer Mellon. Sem stipend sistemático", finC:"A verificar",
+   mkt:"Marketing está no currículo básico, ao lado de otimização e decisão estatística — é a escola mais quantitativa da lista",
+   col:"Pittsburgh é a cidade mais barata entre as sedes de escolas de topo pesquisadas (US$ 1.499 de aluguel)",
+   obs:"Boa arquitetura, cidade razoável, dinheiro incerto. 18% da sobra mensal com bolsa integral — pior que Kelley e Rice, melhor que quase todo o resto. O perfil quantitativo pesado da Tepper é risco para quem vem de marketing e não de números.",
+   j1:{t:"fraco", at:18, txt:"Bolsa de tuition sem stipend, em escola privada. Mesmo padrão recusado."},
+   pend:["Confirmar a mediana de base no relatório de emprego oficial da Tepper","Confirmar se as bolsas nomeadas cobrem tuition integral e se internacionais concorrem","Levantar custo de vida do casal em Pittsburgh pela metodologia do projeto"]},
+
+  {id:"booth-integral", inst:"Chicago — Booth", cid:"Chicago, IL", mes:21,
+   cen:"Bolsa de mérito com tuition integral",
+   stem:"sim", stemT:"MBA inteiramente certificado STEM desde 2020 — de duas concentrações para o diploma todo", stemC:"Confirmado",
+   custo:83300, rec:19500, def:-63800, sal:175000, salT:"faixa de escola de topo — a verificar no relatório oficial",
+   fin:"Bolsas de mérito abertas a internacionais, mais as Global Innovator Fellowships e bolsas regionais. Tuition ~US$ 84k/ano", finC:"Confirmado",
+   mkt:"Marketing forte, mas a escola é conhecida por finanças e consultoria",
+   col:"Chicago é mercado enorme; aluguel de US$ 2.053 é o terceiro mais caro da lista",
+   obs:"A melhor marca dos oito estados e a conta que o custo da cidade estraga. Mesmo com tuition integral, o custo de vida do casal em Chicago gera US$ 64 mil de dívida — 18% da sobra mensal, apesar do melhor salário da lista. Cabe no teto por pouco. Bolsa integral na Booth é rara.",
+   j1:{t:"fraco", at:18, txt:"Bolsa de tuition sem stipend em escola privada de elite. E as Global Innovator Fellowships, apesar do nome, também não trazem dinheiro de custo de vida."},
+   pend:["Confirmar a mediana de base no relatório oficial da Booth","Confirmar se existem bolsas de tuition integral e a frequência","Levantar custo de vida do casal em Chicago pela metodologia do projeto"]},
+
+  {id:"questrom-boston", inst:"Boston University — Questrom", cid:"Boston, MA", mes:21,
+   cen:"Bolsa de mérito com tuition integral",
+   stem:"sim", stemT:"Full-time MBA STEM-designado", stemC:"Confirmado",
+   custo:111125, rec:19500, def:-91625, sal:140000, salT:"a verificar no relatório oficial",
+   fin:"84% da turma recebeu bolsa (dado de 2021); alocação concentrada nas rodadas 1 e 2", finC:"A verificar",
+   mkt:"Questrom tem marketing sólido e Boston é mercado forte de tecnologia e saúde",
+   col:"Boston tem aluguel de 1 quarto de US$ 3.371 — o mais caro de todas as varreduras do projeto",
+   obs:"⚠️ Linha de alerta, não de recomendação. O custo do casal em Boston é US$ 63.500/ano, quase o dobro de Bloomington, e gera US$ 91,6 mil de dívida MESMO com tuition integral. Isso fica logo abaixo do teto que este painel calcula (US$ 92.872) e **acima** do teto corrigido pela perda da isenção de FICA em 2033 (~US$ 90.300) — ou seja, está exatamente em cima da linha, e do lado errado dela pela conta mais atual. A parcela de US$ 1.767 come 36% da sobra mensal, mais que o dobro do Kelley. Massachusetts inteiro sai pelo aluguel, não pelo mérito: MIT Sloan, Harvard, Babson e Northeastern enfrentam a mesma aritmética.",
+   j1:{t:"fraco", at:18, txt:"Bolsa de tuition sem stipend, no cenário de custo mais alto da lista. O sponsor veria US$ 91 mil de empréstimo pessoal sustentando o casal."},
+   pend:["Confirmar a mediana de base da Questrom","Levantar custo de vida do casal em Boston pela metodologia do projeto"]},
+
+  {id:"utd-bolsa", inst:"UT Dallas — Jindal", cid:"Richardson, TX", mes:21,
+   cen:"Bolsa garantida a 100% dos admitidos + tuition de residente",
+   stem:"nao", stemT:"⚠️ O MBA sozinho NÃO é STEM. Só o duplo diploma MS/MBA carrega a designação, e custa um semestre a mais", stemC:"Confirmado",
+   custo:70350, rec:19500, def:-50850, sal:120000, salT:"média inicial da turma de 2025 acima de US$ 120.000",
+   fin:"100% dos admitidos no cohort em tempo integral recebem bolsa que os qualifica para a tuition de residente do Texas; 52% recebem ainda de US$ 21.000 a US$ 35.000", finC:"Confirmado",
+   mkt:"Escola forte em analytics e sistemas de informação, não em marca",
+   col:"Mercado de Dallas–Fort Worth; Texas não cobra imposto de renda",
+   obs:"O financiamento mais generoso e automático dos oito estados — e a arquitetura errada. Todo admitido paga tuition de residente, e metade ganha mais US$ 21–35 mil por cima. Mas o MBA sozinho não é STEM: seriam 12 meses de OPT, não 36. Para recuperar o selo é preciso o duplo diploma com um MS quantitativo, um semestre a mais e uma mudança de curso. Fica na lista como aviso: dinheiro bom não compensa arquitetura errada.",
+   j1:{t:"fraco", at:18, txt:"A bolsa reduz a tuition para a alíquota de residente; não é isenção nem stipend. O custo de vida inteiro sairia de empréstimo."},
+   pend:["Confirmar quanto custa e quanto demora o duplo diploma MS/MBA com designação STEM","Confirmar a mediana (não a média) de base no relatório oficial"]},
+
+  {id:"uf-bolsa", inst:"Florida — Warrington", cid:"Gainesville, FL", mes:22,
+   cen:"Bolsa de mérito de até 100% da tuition",
+   stem:"nao", stemT:"⚠️ O MBA NÃO é STEM. Só o MS em Information Systems and Operations Management e o MS em Business Analytics são", stemC:"Confirmado",
+   custo:69670, rec:19500, def:-50170, sal:128000, salT:"mediana de base da turma de 2023 + US$ 30.000 de bônus; 97% colocados em 90 dias",
+   fin:"Todos os admitidos no tempo integral são avaliados automaticamente para bolsa de mérito, que pode chegar a 100% da tuition. Assistantships da Warrington são reservadas a doutorandos", finC:"Confirmado",
+   mkt:"Marketing existe como concentração",
+   col:"97% colocados em 90 dias é uma das melhores taxas de todas as varreduras; Flórida não cobra imposto de renda",
+   obs:"Excelente colocação, cidade barata, estado sem imposto de renda — e o MBA não é STEM. Seriam 12 meses de OPT contra os 36 que o plano inteiro pressupõe. Fica na lista pelo mesmo motivo da UT Dallas: mostra que nos oito estados o dinheiro e a arquitetura raramente aparecem juntos.",
+   j1:{t:"fraco", at:18, txt:"Bolsa de tuition sem stipend, e a escola diz explicitamente que assistantship é coisa de doutorado. Sem contrapartida institucional de custo de vida."},
+   pend:["Confirmar se a Warrington tem plano de designar o MBA como STEM","Levantar custo de vida do casal em Gainesville pela metodologia do projeto"]}
+];
+
+/* Teste de inglês por escola — verificado em páginas oficiais em set/2026. t: sim | nao | sem (não aceita teste nenhum) | conf (a confirmar) */
+const ING = {
+  "Michigan State — Broad": {t:"sim", m:110, x:"Aceita TOEFL 100 (4,5 na escala nova), IELTS 7, PTE 70 ou Duolingo 110."},
+  "Indiana — Kelley": {t:"sim", m:130, x:"A exigência de Duolingo mais alta do painel. Alternativas: TOEFL 100 (5 na escala nova) ou IELTS 7,0. Quem tira 130 passa em todas as outras escolas."},
+  "Ohio State — Fisher": {t:"sim", m:120, x:"TOEFL 79 ou IELTS 6,5 como alternativas. ⚠️ A escola avisa que o aceite do Duolingo pode mudar em períodos futuros."},
+  "Tennessee — Haslam": {t:"sim", m:120, x:"TOEFL 80 ou IELTS 6,5 como alternativas."},
+  "Arkansas — Walton": {t:"sim", m:110, x:"Aceito para os mestrados da Walton (não para o PhD). 110 é o mínimo da pós-graduação da universidade."},
+  "UGA — Terry": {t:"nao", m:null, x:"A UGA parou de aceitar o Duolingo em julho de 2023. Só TOEFL ou IELTS — e para assistantship, que é o cenário desta linha, o comitê prefere speaking 24 no TOEFL ou 7,5 no IELTS."},
+  "Wisconsin": {t:"sim", m:125, x:"Duolingo 125 ou IELTS 7,0."},
+  "Carlson · Simon · elite": {t:"sim", m:null, x:"Carlson aceita Duolingo, sem mínimo publicado. Simon aceita, com 125 recomendado."},
+  "Virginia — Darden": {t:"sim", m:null, x:"Aceita TOEFL, IELTS, PTE ou Duolingo, sem mínimo oficial. A média de TOEFL da turma é 106."},
+  "NC State — Jenkins": {t:"sim", m:120, x:"TOEFL 80 ou IELTS 6,5 como alternativas. Há dispensa em casos específicos (GMAT/GRE escrito 4,5+ combinado com entrevista)."},
+  "UNC — Kenan-Flagler": {t:"sim", m:120, x:"TOEFL 100, IELTS 7,0 ou PTE 68 como alternativas."},
+  "Duke — Fuqua": {t:"sem", m:null, x:"Não aceita teste de inglês nenhum, nem TOEFL. Avalia o inglês pelas redações, pela entrevista e pelo restante da candidatura."},
+  "Arizona State — W. P. Carey": {t:"sim", m:105, x:"105 é o mínimo da pós-graduação da universidade; a própria ASU avisa que programas podem exigir mais. Não aceita TOEFL Home Edition."},
+  "Auburn — Harbert": {t:"sim", m:115, x:"115 no total, com mínimo de 110 em cada habilidade. TOEFL 79 ou IELTS 6,5 como alternativas."},
+  "Rice — Jones": {t:"sim", m:115, x:"115 é o mínimo da pós-graduação da universidade; a página do MBA não detalha. TOEFL 90 ou IELTS 7 como alternativas."},
+  "Carnegie Mellon — Tepper": {t:"sim", m:120, x:"Recomendado, não mínimo. TOEFL 25 por seção ou IELTS 7 em cada banda como alternativas."},
+  "Chicago — Booth": {t:"sim", m:null, x:"Aceita TOEFL, IELTS, PTE ou Duolingo; mínimo não publicado."},
+  "Boston University — Questrom": {t:"sim", m:120, x:"Recomendado, não mínimo. TOEFL 90 ou IELTS 6,5 por banda como alternativas."},
+  "UT Dallas — Jindal": {t:"conf", m:105, x:"A universidade aceita Duolingo com 105, mas a página do MBA lista só TOEFL ou IELTS. Tratar como não aceito até a escola confirmar por escrito."},
+  "Florida — Warrington": {t:"nao", m:null, x:"A UF não lista o Duolingo. Aceita TOEFL 4,5 (escala nova), IELTS 6,5 ou GRE verbal 140."}
+};
+function detSort(p){ const i = ING[p.inst]; if(!i) return -3; if(i.t==="nao") return -2; if(i.t==="conf") return -1; if(i.t==="sem") return 0; return i.m || 1; }
+function detTag(p){
+  const i = ING[p.inst]; if(!i) return "—";
+  if(i.t==="nao") return '<span class="tag no">não aceita</span>';
+  if(i.t==="sem") return '<span class="tag av">sem teste</span>';
+  if(i.t==="conf") return '<span class="tag est">a confirmar</span>';
+  return '<span class="tag cf">'+(i.m ? i.m : "aceita")+'</span>';
+}
+
+const CIDADES = [
+  {c:"Bloomington, IN", br:1025, ano:34700, f:"projeto (jun/2026)"},
+  {c:"Fayetteville, AR", br:950, ano:33800, f:"Estimado"},
+  {c:"East Lansing, MI", br:1075, ano:35300, f:"projeto"},
+  {c:"Athens, GA", br:1100, ano:35600, f:"projeto"},
+  {c:"Minneapolis, MN", br:1495, ano:37700, f:"Estimado (ago/2026)"},
+  {c:"Columbus, OH", br:1179, ano:37900, f:"projeto"},
+  {c:"Knoxville, TN", br:1245, ano:38700, f:"projeto"},
+  {c:"Madison, WI", br:1530, ano:42200, f:"projeto"},
+  {c:"Tuscaloosa, AL", br:930, ano:34200, f:"Estimado (set/2026)"},
+  {c:"Tucson, AZ", br:997, ano:35000, f:"Estimado (set/2026)"},
+  {c:"Auburn, AL", br:1100, ano:36200, f:"Estimado (set/2026)"},
+  {c:"Eugene, OR", br:1195, ano:37300, f:"Estimado (set/2026)"},
+  {c:"Raleigh, NC", br:1200, ano:37400, f:"Estimado (set/2026)"},
+  {c:"Tempe, AZ", br:1300, ano:38600, f:"Estimado (set/2026)"},
+  {c:"Durham, NC", br:1350, ano:39200, f:"Estimado (set/2026)"},
+  {c:"Williamsburg, VA", br:1400, ano:39800, f:"Estimado (set/2026)"},
+  {c:"Chapel Hill, NC", br:1495, ano:40900, f:"Estimado (set/2026)"},
+  {c:"Charlottesville, VA", br:1845, ano:45100, f:"Estimado (set/2026)"},
+  {c:"Seattle, WA", br:1925, ano:46100, f:"Estimado (set/2026)"},
+  {c:"College Station, TX", br:1100, ano:36200, f:"Estimado (set/2026)"},
+  {c:"Columbia, SC", br:1150, ano:36800, f:"Estimado (set/2026)"},
+  {c:"Houston, TX", br:1250, ano:38000, f:"Estimado (set/2026)"},
+  {c:"Gainesville, FL", br:1250, ano:38000, f:"Estimado (set/2026)"},
+  {c:"Richardson, TX", br:1430, ano:40200, f:"Estimado (set/2026)"},
+  {c:"Pittsburgh, PA", br:1499, ano:41000, f:"Estimado (set/2026)"},
+  {c:"Amherst, MA", br:1500, ano:41000, f:"Estimado (set/2026)"},
+  {c:"Filadélfia, PA", br:1700, ano:43400, f:"Estimado (set/2026)"},
+  {c:"Providence, RI", br:1800, ano:44600, f:"Estimado (set/2026)"},
+  {c:"Davis, CA", br:1900, ano:45800, f:"Estimado (set/2026)"},
+  {c:"Chicago, IL", br:2053, ano:47600, f:"Estimado (set/2026)"},
+  {c:"San Diego, CA", br:2400, ano:51800, f:"Estimado (set/2026)"},
+  {c:"Irvine, CA", br:2700, ano:55400, f:"Estimado (set/2026)"},
+  {c:"Boston, MA", br:3371, ano:63500, f:"Estimado (set/2026)"}
+];
+
+const RANK = [
+  {n:"Indiana Kelley", w:"STEM real no major de marketing, melhor salário (US$ 145k) e melhor colocação (93%). Mesmo no pior cenário de bolsa, a dívida cabe no teto com folga.", r:"US$ 42k de dívida · ~US$ 810/mês"},
+  {n:"Michigan State Broad", w:"MBA inteiro STEM, e o único cenário da varredura em que sobra caixa. Depende de ganhar o prêmio de topo.", r:"US$ 0–16k de dívida"},
+  {n:"Ohio State Fisher", w:"Passa no teste com folga e publica o dado de internacionais (78%), que é o mais honesto da varredura.", r:"US$ 13k de dívida · ~US$ 308/mês"},
+  {n:"Tennessee Haslam", w:"STEM limpo e marketing forte, mas mercado regional (86% ficam no Sul) e stipend não publicado.", r:"US$ 21k de dívida"},
+  {n:"Arkansas Walton", w:"Financiamento mais acessível e menor déficit absoluto, mas 1 ano sem estágio de verão e marketing fraco.", r:"US$ 13k de dívida"}
+];
+
+const ROTA = [
+  {q:"2026–27", w:"Consulta com advogado de EB-1A/NIW, com o inventário de prêmios em mãos", y:"A pergunta não é mais “preciso do MBA?” — é “quando protocolar e sobre qual fundamento?”"},
+  {q:"2026–27", w:"Avaliação de credencial (WES/ECE) do bacharelado como equivalente a 4 anos americanos", y:"É a base do fundamento bacharelado + 5 anos de experiência progressiva, que pode já dar elegibilidade ao EB-2 sem o MBA"},
+  {q:"2026–27", w:"Montar a narrativa de progressão de carreira: cargo a cargo, com datas e escopo crescente", y:"É o que sustenta o “progressive experience” perante o USCIS"},
+  {q:"ago/2026 e jan–mar", w:"Fundação Estudar (agosto) e Fundação Lemann (jan–mar)", y:"Doação, não dívida — e nenhuma das duas dispara o 212(e)"},
+  {q:"2027", w:"GMAT ou GRE, e as inscrições", y:"O teste é a alavanca do dinheiro: o prêmio de topo é o que decide a conta inteira"},
+  {q:"out/2027", w:"Rechecar uma única vez a renovação da iniciativa de Academic Training de 36 meses", y:"Expirada em jun/2026, prognóstico baixo. Tratar como upside, não monitorar de perto"},
+  {q:"2028", w:"Entrevista do F-1 — nada protocolado, nenhuma petição pendente", y:"Momento de risco máximo de 214(b). É a regra de ouro do calendário inteiro", crit:true},
+  {q:"2028–30", w:"MBA. Construir o dossiê de propósito: júri, imprensa, publicação, e um projeto de comunicação de interesse público com resultado mensurável", y:"É a primeira ponta do Dhanasar, onde perfis não-STEM apanham"},
+  {q:"2028–30", w:"Priorizar eletivas quantitativas e mirar tech product marketing ou agência global — não CPG", y:"Dobra a probabilidade de ficar, de ~21% para ~47%"},
+  {q:"verão de 2029", w:"Estágio de verão remunerado", y:"É o mecanismo padrão de conversão em oferta full-time, e é receita da linha de base do modelo"},
+  {q:"início do OPT, 2030", w:"Protocolar o I-140 do NIW com premium processing (45 dias úteis)", y:"No começo do OPT, não “em algum momento” dele: a diferença é um ano de data de prioridade e um ano do relógio de 36 meses", crit:true},
+  {q:"mar/2031·32·33", w:"Registrar no H-1B em paralelo, nas três tentativas", y:"Não são excludentes. H-1B é dupla intenção"},
+  {q:"após o I-140", w:"I-485 — idealmente já em H-1B (dupla intenção, risco zero); em OPT só aceitando o risco", y:"O I-485 pendente dá EAD para a esposa. O dela precisa ser concorrente, senão cai em processamento consular"}
+];
+
+const PEND = [
+  {t:"Consulta com advogado de EB-1A/NIW com o inventário de prêmios", w:"Agora para definir fundamento e calendário do protocolo — não para decidir se o MBA acontece", p:true},
+  {t:"Avaliação de credencial (WES/ECE) do bacharelado", w:"Base do fundamento bacharelado + 5 anos de experiência progressiva", p:true},
+  {t:"Montar a narrativa de progressão de carreira com o advogado", w:"Cargo a cargo, com datas e escopo crescente"},
+  {t:"Ao contratar o advogado do NIW: negociar a resposta a RFE dentro do flat fee", w:"Ponto de negociação de maior retorno do processo — a maioria cobra US$ 1.500–5.000 à parte", p:true},
+  {t:"Perguntar a TODAS as escolas: com assistantship institucional, vocês emitem DS-2019 ou só I-20?", w:"É a pergunta que vale mais que qualquer ranking desta varredura — se alguma emitir DS-2019, a esposa trabalha e o programa muda de categoria", p:true},
+  {t:"Confirmar os códigos CIP de marketing em Broad, Kelley e Haslam", w:"Pedir o código, não a afirmação de que é STEM"},
+  {t:"Confirmar por escrito que internacionais são elegíveis a fellowship/assistantship em Broad e Fisher", w:""},
+  {t:"Confirmar o valor do stipend em Fisher (Leadership Fellow) e Haslam", w:"Nenhuma das duas publica"},
+  {t:"Confirmar se a Global Fellowship LatAm da Kelley é dinheiro ou crédito de tuition, e o valor real", w:"Fontes divergem entre US$ 25k e US$ 35k — muda o cenário inteiro"},
+  {t:"Confirmar se o MBA da Walton é STEM e se há marketing além de eletivas de varejo", w:""},
+  {t:"Confirmar se Wisconsin estendeu a designação STEM a Brand & Product Management", w:"A evidência atual diz que não"},
+  {t:"Levantar custo de vida do casal em Fayetteville e Minneapolis pela metodologia do projeto", w:"Hoje estão estimados"},
+  {t:"Confirmar a lista de escolas do Prodigy para Fall 2028 e o COA certificado de cada uma", w:"O COA é o teto do empréstimo"},
+  {t:"Perguntar a cada escola sobre linha de crédito própria sem fiador", w:"Booth, Kellogg e Fuqua têm; Ross não"},
+  {t:"Monitorar se a MPOWER volta a emprestar", w:"Taxa fixa é vantagem real sobre o Prodigy variável"},
+  {t:"Confirmar se Kelley e Broad são parceiras da Fundação Lemann", w:""},
+  {t:"Planejar como cobrir o buraco não financiável de US$ 20–26 mil", w:"Custo do cônjuge fica fora do COA. Um I-485 pendente resolveria, via EAD da esposa"},
+  {t:"Pedir a cada escola a lista de empregadores que PATROCINARAM visto", w:"Não a lista de recrutadores que apareceram no campus", p:true},
+  {t:"Acompanhar o rulemaking do OPT/STEM OPT no DHS", w:"É o risco que pode zerar a tese desta varredura"},
+  {t:"Confirmar com advogado o risco de protocolar I-485 estando em F-1", w:"O I-140 é consenso; o I-485 não é. E como isso interage com viagens ao Brasil"},
+  {t:"Refazer a conta do teto contando a perda da isenção de FICA em 2033", w:"A isenção vale 5 anos-calendário (2028–2032); os ~6 meses finais do OPT já são de residente fiscal. Efeito: teto de US$ 92.872 para ~US$ 90.300"},
+  {t:"Substituir o marcador de 3,5% de imposto estadual pela alíquota real da cidade do emprego", w:"A dispersão é enorme: Texas e Tennessee 0%, Geórgia 5,39%, Minnesota 5,35%"},
+  {t:"Reconfirmar em 2030 as taxas do G-1055 e as faixas de honorário", w:"Os números são de set/2026 e as taxas do USCIS sobem quase todo ano"},
+  {t:"Confirmar em 2028 se o Visa Integrity Fee de US$ 250/pessoa já é cobrado no consulado brasileiro", w:"Implementação ainda irregular em set/2026"},
+  {t:"Pedir o valor do stipend da Graduate Assistantship na ASU e em Auburn", w:"Nenhuma das duas publica, e é o número que decide os dois cenários", p:true},
+  {t:"Perguntar à Darden se a Jefferson Fellowship é renovável nos dois anos e quantas vão para MBA", w:"É o melhor pacote da varredura inteira e o de menor probabilidade — vale saber o tamanho exato do funil", p:true},
+  {t:"Confirmar se a assistantship do Jenkins cobre a tuition de fora do estado", w:"US$ 95.680 no programa contra US$ 55.732 de residente — a diferença decide o cenário"},
+  {t:"Pedir a UNC e Fuqua o valor médio e máximo de fellowship para internacionais", w:"Nenhuma das duas publica; sem isso o cenário de tuition integral é hipótese"},
+  {t:"Confirmar se o MBA da Auburn Harbert tem designação STEM e qual o CIP", w:"Não foi localizada em fonte pública"},
+  {t:"Levantar custo de vida do casal em Charlottesville, Raleigh, Chapel Hill, Durham, Tempe e Auburn", w:"As seis entraram estimadas em set/2026, por aluguel de 1 quarto mais cesta do projeto"},
+  {t:"Pedir relatório de emprego oficial de ASU, Fuqua e Auburn", w:"ASU diverge entre US$ 100k e US$ 126,6k; Auburn entre US$ 54,3k e US$ 136k"},
+  {t:"Pedir à Rice a DISTRIBUIÇÃO dos prêmios, não a média", w:"96% recebem bolsa e a média é US$ 81k de US$ 158k de tuition. A pergunta é quantos recebem integral — é o que separa 15% de 40% da sobra mensal", p:true},
+  {t:"Confirmar que internacionais concorrem em igualdade às bolsas da Rice, Booth e Tepper", w:"Nenhuma das três afirma isso de forma inequívoca nas páginas públicas"},
+  {t:"Confirmar se a Warrington (UF) planeja designar o MBA como STEM", w:"Colocação de 97% em 90 dias, cidade barata, estado sem imposto — só falta o selo"},
+  {t:"Levantar custo de vida do casal em Houston, Pittsburgh, Chicago e Gainesville", w:"Entraram estimados em set/2026"},
+  {t:"Confirmar medianas de base oficiais de Tepper, Booth e Questrom", w:"As três entraram por faixa, não por relatório"},
+  {t:"Reconferir em 2027, antes de agendar, quais escolas ainda aceitam o Duolingo e as notas mínimas", w:"17 de 21 aceitavam em set/2026. A UGA cortou em 2023 e a Ohio State já avisa que pode cortar. A nota que decide é a do Kelley: 130", p:true},
+  {t:"Pedir à UT Dallas confirmação por escrito sobre o Duolingo no MBA", w:"A universidade aceita (105), a página do MBA lista só TOEFL e IELTS"}
+];
+
+const JURIDICO = {
+  enxuto:{
+    lab:"Enxuto", tot:17700, hon:10200,
+    f:[["Fase 0 — Consultas (2026–27)","US$ 200","Uma consulta paga + avaliação de credencial",200],
+       ["Fase 1 — Visto F-1 (2028)","US$ 0","SEVIS 350 + DS-160 do casal 370 + Visa Integrity Fee 500",1220],
+       ["Fase 2 — I-140 do NIW (2030)","US$ 8.000","I-140 online 665 + Asylum Program Fee 300 + traduções 500 · sem premium",9465],
+       ["Fase 3 — RFE","US$ 0","Aprovado de primeira",0],
+       ["Fase 4 — I-485 do casal (2031+)","US$ 2.000","I-485 2.780 + I-765 520 + I-131 1.160 (online) + exame médico 400",6860],
+       ["Fase 5 — H-1B (2031–33)","US$ 0","Por lei é do empregador",0]]},
+  central:{
+    lab:"Central", tot:28700, hon:17100,
+    f:[["Fase 0 — Consultas (2026–27)","US$ 600","Duas consultas pagas, escritórios diferentes",600],
+       ["Fase 1 — Visto F-1 (2028)","US$ 0","SEVIS 350 + DS-160 do casal 370 + Visa Integrity Fee 500",1220],
+       ["Fase 2 — I-140 do NIW (2030)","US$ 10.000","I-140 715 + Asylum Program Fee 300 + premium 2.965 + traduções 1.000",14980],
+       ["Fase 3 — RFE","US$ 3.000","Não incluído no flat fee da maioria dos escritórios",3000],
+       ["Fase 4 — I-485 do casal (2031+)","US$ 3.500","I-485 2.880 + I-765 520 + I-131 1.260 + exame médico 700",8860],
+       ["Fase 5 — H-1B (2031–33)","US$ 0","Por lei é do empregador",0]]},
+  caro:{
+    lab:"Caro", tot:42760, hon:30400,
+    f:[["Fase 0 — Consultas (2026–27)","US$ 900","Três consultas, escritórios de topo",900],
+       ["Fase 1 — Visto F-1 (2028)","US$ 0","SEVIS 350 + DS-160 do casal 370 + Visa Integrity Fee 500",1220],
+       ["Fase 2 — I-140, rota EB-1A","US$ 20.000","I-140 715 + Asylum Program Fee 300 + premium 2.965 + traduções 1.500",25480],
+       ["Fase 3 — RFE","US$ 5.000","EB-1A tem escrutínio maior e RFE mais caro",5000],
+       ["Fase 4 — I-485 do casal (2031+)","US$ 4.500","I-485 2.880 + I-765 520 + I-131 1.260 + exame médico 1.000",10160],
+       ["Fase 5 — H-1B (2031–33)","US$ 0","Por lei é do empregador",0]]}
+};
+
+const STATUS = ["Não avaliado","Interesse","Pesquisando","Shortlist","Aplicando","Aplicado","Resultado"];
+const STCOR = {"Não avaliado":"ok","Interesse":"est","Pesquisando":"est","Shortlist":"cf","Aplicando":"cf","Aplicado":"cf","Resultado":"cf"};
+
+/* ==================== ESTADO ==================== */
+const KEY = "projetoEUA2028_mba_v1";
+let S = {status:{}, notas:{}, rota:{}, pend:{}, sim:{}, chain:{}};
+function load(){
+  try{ const r = localStorage.getItem(KEY); if(r) S = Object.assign(S, JSON.parse(r)); }catch(e){}
+}
+function save(){
+  try{
+    localStorage.setItem(KEY, JSON.stringify(S));
+    document.getElementById("savedAt").textContent = "salvo " + new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
+  }catch(e){ document.getElementById("savedAt").textContent = "não foi possível salvar"; }
+}
+function exportState(){
+  const b = new Blob([JSON.stringify(S,null,2)],{type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(b);
+  a.download = "painel_mba_" + new Date().toISOString().slice(0,10) + ".json";
+  a.click();
+}
+function importState(inp){
+  const f = inp.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = e => { try{ S = Object.assign(S, JSON.parse(e.target.result)); save(); renderAll(); }catch(x){ alert("Arquivo inválido."); } };
+  r.readAsText(f); inp.value = "";
+}
+
+/* ==================== UTIL ==================== */
+const money = n => (n<0?"-":"") + "US$ " + Math.abs(Math.round(n)).toLocaleString("pt-BR");
+const money0 = n => "US$ " + Math.round(n).toLocaleString("pt-BR");
+const pct = n => (n*100).toFixed(0) + "%";
+function pmt(P0, apr, anos){ const r = apr/100/12, n = anos*12; return r===0 ? P0/n : P0*r/(1-Math.pow(1+r,-n)); }
+function capitaliza(P0, apr, meses){ return P0*Math.pow(1+apr/100/12, meses); }
+/* Sobra mensal no OPT: modelo linear ancorado nos três pontos calculados na pesquisa
+   (US$ 115k -> 3.377 · US$ 130k -> 4.283 · US$ 145k -> 5.190/mês, já líquido de imposto NRA e custo de vida do casal). */
+function sobraMensal(sal){ return 3377 + (sal-115000)/1000*60.43; }
+
+function go(t){
+  document.querySelectorAll("section.tab").forEach(s=>s.classList.remove("active"));
+  document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
+  document.getElementById("tab-"+t).classList.add("active");
+  document.querySelector('.tab-btn[data-t="'+t+'"]').classList.add("active");
+}
+
+/* ==================== FINANCIAMENTO ==================== */
+function tetoAtual(){
+  const sal = +document.getElementById("fSal").value;
+  const jur = document.getElementById("fJur").checked ? +document.getElementById("fJurC").value : 0;
+  return Math.max(0, sobraMensal(sal)*36 - jur);
+}
+function calcFin(){
+  const emp = +document.getElementById("fEmp").value;
+  const apr = +document.getElementById("fApr").value;
+  const anos = +document.getElementById("fAnos").value;
+  const cap = +document.getElementById("fCap").value;
+  const adm = +document.getElementById("fAdm").value;
+  const sal = +document.getElementById("fSal").value;
+  document.getElementById("fEmpN").value = emp;
+  document.getElementById("fVal").textContent = money0(emp);
+  document.getElementById("fAprV").textContent = apr.toFixed(2).replace(".",",") + "%";
+  document.getElementById("fCapV").textContent = cap + " meses";
+  document.getElementById("fSalV").textContent = money0(sal);
+
+  const comTaxa = emp*(1+adm/100);
+  const saldo = capitaliza(comTaxa, apr, cap);
+  const parc = pmt(saldo, apr, anos);
+  const total = parc*anos*12;
+  const sobra = sobraMensal(sal);
+  const jur = document.getElementById("fJur").checked ? +document.getElementById("fJurC").value : 0;
+  const teto = Math.max(0, sobra*36 - jur);
+  const meses36 = sobra*36;
+
+  document.getElementById("fOut").innerHTML = [
+    ["Saldo ao começar a pagar", money0(saldo), "p"],
+    ["Parcela mensal", money0(parc), parc > sobra*0.5 ? "r" : "g"],
+    ["Total pago em "+anos+" anos", money0(total), ""],
+    ["Custo do crédito", money0(total-emp), "y"],
+    ["Sobra mensal no OPT", money0(sobra), "g"],
+    ["36 meses de OPT quitam", money0(meses36), "g"]
+  ].map(o=>'<div class="o '+o[2]+'"><div class="l">'+o[0]+'</div><div class="v">'+o[1]+'</div></div>').join("");
+
+  const v = document.getElementById("fVerdict");
+  if(emp === 0){
+    v.className = "verdict ok";
+    v.innerHTML = "Sem dívida. É o cenário do prêmio de topo — o melhor caso da varredura, não o esperado.";
+  } else if(emp <= teto*0.75){
+    v.className = "verdict ok";
+    v.innerHTML = "&#10003; <strong>Confortável.</strong> " + money0(emp) + " está bem abaixo do teto de " + money0(teto) +
+      " que 36 meses de OPT quitam sozinhos, já descontado o jurídico. O plano não depende de ganhar o H-1B.";
+  } else if(emp <= teto){
+    v.className = "verdict lim";
+    v.innerHTML = "&#9888; <strong>No limite.</strong> " + money0(emp) + " cabe no teto de " + money0(teto) +
+      ", mas sem folga. Qualquer coisa fora do previsto — salário abaixo do esperado, APR subindo, RFE — e a conta aperta.";
+  } else {
+    v.className = "verdict no";
+    v.innerHTML = "&#10007; <strong>Estoura o teto.</strong> " + money0(emp) + " passa dos " + money0(teto) +
+      " que o OPT quita sozinho. Acima daqui você não está financiando uma carreira, está financiando um bilhete de loteria: " +
+      "o plano só fecha se o H-1B sair, e o H-1B não é certeza.";
+  }
+  document.getElementById("fNote").innerHTML =
+    "Teto = sobra de 36 meses de OPT (" + money0(meses36) + ")" +
+    (jur ? " menos o custo jurídico (" + money0(jur) + ")" : " sem descontar jurídico") +
+    " = <strong>" + money0(teto) + "</strong>. A sobra mensal é líquida de imposto NRA e do custo de vida do casal, e " +
+    "<strong>não conta nenhuma renda da esposa</strong> — em F-2 ela é zero por regra, não por conservadorismo. " +
+    "No cenário de fracasso (volta ao Brasil, R$ 25.000/mês bruto) a sobra cai para ~US$ 2.039/mês.";
+
+  const cen = [["S1 Broad/Fisher com prêmio de topo",16000],["S2 Público com prêmio mediano",24000],
+               ["S3 Kelley com tuition integral, sem cash",42000],["S4 Bolsa de 50% do tuition",102000],
+               ["S5 Elite sem bolsa nenhuma",222000]];
+  document.getElementById("fSens").innerHTML = cen.map(c=>{
+    const s = capitaliza(c[1]*(1+adm/100), apr, cap);
+    const f = a => money0(pmt(capitaliza(c[1]*(1+adm/100), a, cap), a, anos));
+    const over = c[1] > teto;
+    return '<tr'+(over?' style="opacity:.55"':'')+'><td>'+c[0]+(over?' <span class="tag no">estoura</span>':'')+
+      '</td><td class="num">'+money0(c[1])+'</td><td class="num">'+f(11.06)+'</td><td class="num"><strong>'+f(13.38)+
+      '</strong></td><td class="num">'+f(16)+'</td><td class="num">'+money0(s)+'</td></tr>';
+  }).join("");
+
+  S.sim = {emp:emp, apr:apr, anos:anos, cap:cap, adm:adm, sal:sal, jur:document.getElementById("fJur").checked, jurC:document.getElementById("fJurC").value};
+  save();
+  renderProgramas();
+  renderCards();
+}
+function applyPreset(){
+  const v = document.getElementById("fPreset").value;
+  if(v === "") return;
+  document.getElementById("fEmp").value = v;
+  calcFin();
+}
+
+/* ==================== CADEIA ==================== */
+const LINKS = [
+  {k:"emprego", n:"Emprego até 6 meses", cpg:90, tech:90},
+  {k:"patroc", n:"Empregador patrocina", cpg:35, tech:75},
+  {k:"loteria", n:"Loteria — 3 tentativas, faixa 2–3, com a 2ª cota", cpg:78, tech:78},
+  {k:"peticao", n:"Petição aprovada", cpg:85, tech:90}
+];
+function preset(t){
+  LINKS.forEach(l => { S.chain[l.k] = l[t]; document.getElementById("ch-"+l.k).value = l[t]; });
+  calcChain();
+}
+function renderChain(){
+  document.getElementById("chainBox").innerHTML = LINKS.map(l =>
+    '<div class="link"><div class="ln">'+l.n+'</div><div class="lv" id="chv-'+l.k+'"></div>' +
+    '<input type="range" id="ch-'+l.k+'" min="0" max="100" step="1" value="'+(S.chain[l.k]!==undefined?S.chain[l.k]:l.tech)+'" oninput="calcChain()"></div>').join("");
+  calcChain();
+}
+function calcChain(){
+  let p = 1;
+  LINKS.forEach(l => {
+    const v = +document.getElementById("ch-"+l.k).value;
+    S.chain[l.k] = v;
+    document.getElementById("chv-"+l.k).textContent = v + "%";
+    p *= v/100;
+  });
+  const niwOn = document.getElementById("cNiw").checked;
+  const niwP = +document.getElementById("cNiwP").value;
+  document.getElementById("cNiwV").textContent = niwP + "%";
+  S.chain.niwOn = niwOn; S.chain.niwP = niwP;
+  const comb = niwOn ? 1 - (1-p)*(1-niwP/100) : p;
+
+  document.getElementById("chainOut").innerHTML = [
+    ["P(ficar) só via H-1B", pct(p), p<0.3?"r":(p<0.5?"y":"g")],
+    ["P(NIW aprovado)", niwOn ? niwP+"%" : "—", "p"],
+    ["P(ficar) com as duas rotas", pct(comb), comb<0.5?"y":"g"]
+  ].map(o=>'<div class="o '+o[2]+'"><div class="l">'+o[0]+'</div><div class="v">'+o[1]+'</div></div>').join("");
+
+  const v = document.getElementById("chainVerdict");
+  if(!niwOn){
+    v.className = "verdict " + (p<0.3?"no":(p<0.5?"lim":"ok"));
+    v.innerHTML = "Sem o NIW, <strong>tudo depende do empregador</strong> — e o elo do patrocínio é o mais frágil da cadeia. " +
+      "Ligue o NIW acima para ver o que muda.";
+  } else {
+    v.className = "verdict " + (comb<0.5?"lim":"ok");
+    v.innerHTML = "<strong>O NIW não substitui o H-1B — ele remove a dependência dele.</strong> " +
+      "A probabilidade sobe de " + pct(p) + " para " + pct(comb) + ", mas o ganho real não é o número: é que " +
+      "<strong>você deixa de ter um único ponto de falha</strong>. A auto-petição elimina o elo do patrocínio, " +
+      "que é justamente o gargalo.";
+  }
+  save();
+  renderCards();
+}
+
+/* ==================== JURÍDICO ==================== */
+function renderJur(){
+  const c = JURIDICO[document.getElementById("jCen").value];
+  document.getElementById("jBody").innerHTML = c.f.map(f =>
+    '<tr><td><strong>'+f[0]+'</strong></td><td>'+f[1]+'</td><td class="small" style="max-width:420px">'+f[2]+'</td><td class="num"><strong>'+money0(f[3])+'</strong></td></tr>').join("")
+    + '<tr style="background:var(--bg3)"><td colspan="3"><strong>Total desembolsado</strong></td><td class="num"><strong>'+money0(c.tot)+'</strong></td></tr>';
+  document.getElementById("jOut").innerHTML = [
+    ["Só honorários de advogado", money0(c.hon), "p"],
+    ["Total com taxas e periféricos", money0(c.tot), "y"],
+    ["Quanto disso é financiável", "US$ 0", "r"],
+    ["Meses de sobra do OPT que isso consome", (c.tot/sobraMensal(115000)).toFixed(1).replace(".",","), "y"]
+  ].map(o=>'<div class="o '+o[2]+'"><div class="l">'+o[0]+'</div><div class="v">'+o[1]+'</div></div>').join("");
+  document.getElementById("jTot").innerHTML = "Planeje com <strong style=\"color:var(--txt)\">US$ 28.700</strong> — é o número honesto";
+}
+
+/* ==================== PROGRAMAS ==================== */
+let sortK = "def", sortD = -1;
+function passa(p){
+  if(p.def >= 0) return "Sim";
+  const r = Math.abs(p.def)/p.rec;
+  return r <= 0.30 ? "Sim" : (r <= 0.36 ? "Limite" : "Não");
+}
+function divida(p){ return p.def >= 0 ? 0 : Math.abs(p.def); }
+function parcelaDe(p){
+  const d = divida(p); if(d === 0) return 0;
+  const apr = S.sim.apr || 13.38, cap = S.sim.cap !== undefined ? S.sim.cap : 18,
+        adm = S.sim.adm !== undefined ? S.sim.adm : 4.2, anos = S.sim.anos || 10;
+  return pmt(capitaliza(d*(1+adm/100), apr, cap), apr, anos);
+}
+const COLS = [
+  {k:"inst", n:"Escola e cenário"},
+  {k:"cid", n:"Cidade"},
+  {k:"mes", n:"Meses"},
+  {k:"stem", n:"STEM"},
+  {k:"j1t", n:"J-1 possível?"},
+  {k:"at", n:"AT no J-1"},
+  {k:"def", n:"Déficit no período"},
+  {k:"pctr", n:"% da receita"},
+  {k:"passa", n:"Teste &le;30%"},
+  {k:"div", n:"Dívida"},
+  {k:"parc", n:"Parcela"},
+  {k:"teto", n:"Cabe no teto?"},
+  {k:"sal", n:"Salário bruto"},
+  {k:"det", n:"Duolingo"},
+  {k:"st", n:"Status"}
+];
+function sortBy(k){ if(sortK===k) sortD*=-1; else {sortK=k; sortD=-1;} renderProgramas(); }
+function renderProgramas(){
+  const q = (document.getElementById("pgSearch").value||"").toLowerCase();
+  const fs = document.getElementById("pgStem").value;
+  const fj = document.getElementById("pgJ1").value;
+  const fp = document.getElementById("pgPassa").value;
+  const ft = document.getElementById("pgTeto").value;
+  const fst = document.getElementById("pgStatus").value;
+  const teto = tetoAtual();
+
+  document.getElementById("pgHead").innerHTML = "<tr>" + COLS.map(c =>
+    '<th onclick="sortBy(\''+c.k+'\')">'+c.n+' <span class="arr">'+(sortK===c.k?(sortD>0?"&#9650;":"&#9660;"):"&#8597;")+'</span></th>').join("") + "</tr>";
+
+  let rows = P.map(p => {
+    const d = divida(p);
+    return Object.assign({}, p, {
+      pctr: p.def>=0 ? -1 : Math.abs(p.def)/p.rec,
+      passa: passa(p), div: d, parc: parcelaDe(p),
+      teto: d <= teto, st: S.status[p.id] || "Não avaliado",
+      j1t: {forte:3, medio:2, fraco:1}[p.j1.t], at: p.j1.at, det: detSort(p)
+    });
+  });
+  rows = rows.filter(r => {
+    if(q && !(r.inst+" "+r.cid+" "+r.cen+" "+r.obs).toLowerCase().includes(q)) return false;
+    if(fs && r.stem !== fs) return false;
+    if(fj && r.j1.t !== fj) return false;
+    if(fp && r.passa !== fp) return false;
+    if(ft !== "" && r.teto !== (ft==="1")) return false;
+    if(fst && r.st !== fst) return false;
+    return true;
+  });
+  rows.sort((a,b) => {
+    let x = a[sortK], y = b[sortK];
+    if(typeof x === "string") return sortD * x.localeCompare(y,"pt-BR");
+    if(typeof x === "boolean") return sortD * ((x?1:0)-(y?1:0));
+    if(x === null) x = -1e12; if(y === null) y = -1e12;
+    return sortD * (x-y);
+  });
+
+  const stemTag = {sim:'<span class="tag cf">STEM</span>', parcial:'<span class="tag est">parcial</span>', nao:'<span class="tag no">não conf.</span>'};
+  const j1Tag = {forte:'<span class="tag cf">plausível</span>', medio:'<span class="tag est">frágil</span>', fraco:'<span class="tag no">improvável</span>'};
+  document.getElementById("pgBody").innerHTML = rows.map(r =>
+    '<tr onclick="openProg(\''+r.id+'\')">' +
+    '<td><span class="inst">'+r.inst+'</span><span class="prog">'+r.cen+'</span></td>' +
+    '<td class="small">'+r.cid+'</td>' +
+    '<td class="num">'+r.mes+'</td>' +
+    '<td>'+stemTag[r.stem]+'</td>' +
+    '<td>'+j1Tag[r.j1.t]+'</td>' +
+    '<td class="num'+(r.at<18?' neg':'')+'">'+r.at+' m</td>' +
+    '<td class="num '+(r.def>=0?"pos":"neg")+'">'+money(r.def)+'</td>' +
+    '<td class="num">'+(r.pctr<0?'<span class="pos">sobra</span>':pct(r.pctr))+'</td>' +
+    '<td><span class="pill '+(r.passa==="Sim"?"sim":(r.passa==="Limite"?"lim":"nao"))+'">'+r.passa+'</span></td>' +
+    '<td class="num">'+(r.div?money0(r.div):"—")+'</td>' +
+    '<td class="num">'+(r.parc?money0(r.parc)+"/m":"—")+'</td>' +
+    '<td>'+(r.div===0?'<span class="tag ok">sem dívida</span>':(r.teto?'<span class="tag cf">cabe</span>':'<span class="tag no">estoura</span>'))+'</td>' +
+    '<td class="num">'+(r.sal?money0(r.sal):"—")+'</td>' +
+    '<td>'+detTag(r)+'</td>' +
+    '<td><span class="tag '+STCOR[r.st]+'">'+r.st+'</span></td></tr>').join("");
+
+  document.getElementById("pgCount").textContent = rows.length + " de " + P.length + " cenários";
+  document.getElementById("pgNote").innerHTML =
+    "Cada linha é um <strong>cenário de financiamento</strong>, não uma escola — a dispersão dentro de uma mesma " +
+    "escola é maior que a dispersão entre escolas. Dívida e parcela usam os parâmetros da aba Financiamento " +
+    "(APR " + (S.sim.apr||13.38).toFixed(2).replace(".",",") + "%, " + (S.sim.anos||10) + " anos, " +
+    (S.sim.cap!==undefined?S.sim.cap:18) + " meses de carência). Teto atual: <strong>" + money0(teto) + "</strong>.";
+}
+
+function openProg(id){
+  const p = P.find(x => x.id === id);
+  const d = divida(p), parc = parcelaDe(p), teto = tetoAtual();
+  const st = S.status[id] || "Não avaliado";
+  document.getElementById("modal").innerHTML =
+    '<button class="mclose" onclick="closeModal()">&times;</button>' +
+    '<h2>'+p.inst+'</h2><div class="msub">'+p.cen+' &middot; '+p.cid+' &middot; '+p.mes+' meses</div>' +
+    '<div class="mgrid">' +
+      '<div class="mstat"><div class="l">Déficit no período</div><div class="v '+(p.def>=0?"pos":"neg")+'">'+money(p.def)+'</div></div>' +
+      '<div class="mstat"><div class="l">Teste &le;30%</div><div class="v">'+passa(p)+'</div></div>' +
+      '<div class="mstat"><div class="l">Dívida necessária</div><div class="v">'+(d?money0(d):"nenhuma")+'</div></div>' +
+      '<div class="mstat"><div class="l">Parcela (10 anos)</div><div class="v">'+(parc?money0(parc):"—")+'</div></div>' +
+      '<div class="mstat"><div class="l">Cabe no teto de '+money0(teto)+'?</div><div class="v '+(d<=teto?"pos":"neg")+'">'+(d<=teto?"Sim":"Não")+'</div></div>' +
+      '<div class="mstat"><div class="l">Salário-base bruto</div><div class="v">'+(p.sal?money0(p.sal):"—")+'</div></div>' +
+    '</div>' +
+    '<div class="mrow"><label>Status</label><select onchange="setStatus(\''+id+'\',this.value)">' +
+      STATUS.map(s=>'<option'+(s===st?" selected":"")+'>'+s+'</option>').join("") + '</select></div>' +
+    '<div class="mh">STEM <span class="tag '+(p.stemC==="Confirmado"?"cf":"av")+'">'+p.stemC+'</span></div><p>'+p.stemT+'</p>' +
+    '<div class="mh">Visto J-1 ' + {forte:'<span class="tag cf">plausível</span>', medio:'<span class="tag est">frágil / indeterminado</span>', fraco:'<span class="tag no">improvável</span>'}[p.j1.t] +
+      ' <span class="tag av">política da escola a verificar</span></div>' +
+    '<p>'+p.j1.txt+'</p>' +
+    '<div class="' + (p.j1.t==="forte"?"good":(p.j1.t==="medio"?"warn":"danger")) + '">' +
+      '<strong>O preço do J-1 aqui:</strong> Academic Training de <strong>'+p.j1.at+' meses</strong> ' +
+      (p.j1.at<18 ? '(o curso tem '+p.mes+' meses, e o AT nunca excede a duração do curso) ' : '(teto de mestrado) ') +
+      'contra <strong>36 meses</strong> de OPT + STEM OPT no F-1. Em troca, a esposa trabalha: com J-2 e EAD, ' +
+      'a US$ 2.500/mês líquidos são <strong>'+money0(2500*p.mes)+'</strong> ao longo dos '+p.mes+' meses do programa. ' +
+      (p.stem==="sim" ? 'E o selo STEM desta escola <strong>deixa de valer</strong> — ele não faz nada por um J-1 de mestrado.' : '') +
+    '</div>' +
+    '<div class="mh">Financiamento <span class="tag '+(p.finC==="Confirmado"?"cf":(p.finC==="Estimado"?"est":"av"))+'">'+p.finC+'</span></div><p>'+p.fin+'</p>' +
+    '<div class="mh">Teste de inglês — Duolingo '+detTag(p)+'</div><p>'+(ING[p.inst]?ING[p.inst].x:"")+
+      ' <span class="small">(verificado em set/2026 — as regras mudam; confirme antes de agendar o teste)</span></p>' +
+    '<div class="mh">Marketing</div><p>'+p.mkt+'</p>' +
+    '<div class="mh">Colocação e mercado</div><p>'+p.col+(p.salT?' <span class="small">('+p.salT+')</span>':"")+'</p>' +
+    '<div class="mh">Leitura</div><p>'+p.obs+'</p>' +
+    '<div class="mh">A verificar</div><ul class="tight">'+p.pend.map(x=>"<li>"+x+"</li>").join("")+'</ul>' +
+    '<div class="mh">Suas notas</div><textarea id="mNota" oninput="setNota(\''+id+'\',this.value)" placeholder="O que você descobriu, com quem falou, o que ficou pendente…">'+(S.notas[id]||"")+'</textarea>' +
+    '<div class="mh">Conta detalhada</div>' +
+    '<p class="small" style="max-width:none">Custo do casal no período: <strong>'+money0(p.custo)+'</strong> &middot; ' +
+    'Receita no período: <strong>'+money0(p.rec)+'</strong> &middot; ' +
+    'Premissas: estágio de verão de US$ 25.000 brutos &rarr; US$ 19.500 líquidos; stipend líquido = 0,87 &times; bruto; ' +
+    'renda da esposa = zero (F-2, por regra). <strong>Receita e déficit já estão líquidos de imposto; o salário acima é bruto</strong> ' +
+    '(é como as escolas publicam). Ver a nota de metodologia na aba Financiamento.</p>';
+  document.getElementById("modalBg").classList.add("open");
+}
+function closeModal(){ document.getElementById("modalBg").classList.remove("open"); }
+function setStatus(id,v){ S.status[id]=v; save(); renderProgramas(); renderKanban(); renderCards(); }
+function setNota(id,v){ S.notas[id]=v; save(); }
+
+/* ==================== KANBAN ==================== */
+function renderKanban(){
+  document.getElementById("kanban").innerHTML = STATUS.map(s => {
+    const its = P.filter(p => (S.status[p.id]||"Não avaliado") === s);
+    return '<div class="kcol"><h3><span>'+s+'</span><span>'+its.length+'</span></h3>' +
+      its.map(p => '<div class="kcard" onclick="openProg(\''+p.id+'\')"><div class="ki">'+p.inst+'</div>' +
+        '<div class="km"><span>'+p.cen.slice(0,42)+(p.cen.length>42?"…":"")+'</span></div>' +
+        '<div class="km"><span class="'+(p.def>=0?"pos":"neg")+'">'+money(p.def)+'</span>' +
+        '<span>'+p.mes+' m</span></div></div>').join("") + '</div>';
+  }).join("");
+}
+
+/* ==================== ROTA / PENDÊNCIAS ==================== */
+function renderRota(){
+  document.getElementById("rotaList").innerHTML = ROTA.map((r,i) =>
+    '<div class="tli'+(S.rota[i]?" done":"")+(r.crit?" crit":"")+'" onclick="togRota('+i+')">' +
+    '<div class="when">'+r.q+'</div><div class="what">'+r.w+'<span class="why">'+r.y+'</span></div></div>').join("");
+  const n = ROTA.filter((r,i)=>S.rota[i]).length;
+  document.querySelector("#rotaBar>div").style.width = (n/ROTA.length*100)+"%";
+}
+function togRota(i){ S.rota[i] = !S.rota[i]; save(); renderRota(); renderCards(); }
+function renderPend(){
+  document.getElementById("pendList").innerHTML = PEND.map((p,i) =>
+    '<div class="ck'+(S.pend[i]?" done":"")+'" onclick="togPend('+i+')">' +
+    '<input type="checkbox" '+(S.pend[i]?"checked":"")+' onclick="event.stopPropagation();togPend('+i+')">' +
+    '<div class="cl">'+(p.p?'<span class="prio">prioridade</span>':"")+p.t+(p.w?'<span class="cw">'+p.w+'</span>':"")+'</div></div>').join("");
+  const n = PEND.filter((p,i)=>S.pend[i]).length;
+  document.querySelector("#pendBar>div").style.width = (n/PEND.length*100)+"%";
+}
+function togPend(i){ S.pend[i] = !S.pend[i]; save(); renderPend(); renderCards(); }
+
+/* ==================== J-1 ==================== */
+function renderJ1(){
+  const tag = {forte:'<span class="tag cf">plausível</span>', medio:'<span class="tag est">frágil</span>', fraco:'<span class="tag no">improvável</span>'};
+  const ord = {forte:0, medio:1, fraco:2};
+  const rows = P.slice().sort((a,b) => ord[a.j1.t]-ord[b.j1.t] || b.j1.at-a.j1.at);
+  document.getElementById("j1Body").innerHTML = rows.map(p =>
+    '<tr onclick="openProg(\''+p.id+'\')">' +
+    '<td><span class="inst">'+p.inst+'</span><span class="prog">'+p.cen+'</span></td>' +
+    '<td>'+tag[p.j1.t]+'</td>' +
+    '<td class="num">'+p.mes+' m</td>' +
+    '<td class="num'+(p.j1.at<18?' neg':'')+'"><strong>'+p.j1.at+' m</strong></td>' +
+    '<td class="num neg">&minus;'+(36-p.j1.at)+' m</td>' +
+    '<td class="num'+(p.j1.t==="fraco"?'" style="opacity:.4"':' pos"')+'>'+(p.j1.t==="fraco"?"—":money0(2500*p.mes))+'</td>' +
+    '<td class="small" style="max-width:460px">'+p.j1.txt+'</td></tr>').join("");
+
+  const nf = P.filter(p=>p.j1.t==="forte").length;
+  const nm = P.filter(p=>p.j1.t==="medio").length;
+  document.getElementById("j1Cards").innerHTML = [
+    {v:nf, l:"cenários com J-1 plausível", c:"g", s:"todos por financiamento institucional — nenhum precisa de Fulbright ou CAPES"},
+    {v:nm, l:"frágeis ou indeterminados", c:"y", s:"bolsa de tuition sem stipend, ou stipend que só chega no 2º ano"},
+    {v:"5%", l:"dos MBAs internacionais entram em J-1", c:"o", s:"e tipicamente com patrocinador externo, não com dinheiro da escola"},
+    {v:"11–18 m", l:"janela de Academic Training", c:"r", s:"contra 36 meses de OPT + STEM OPT no F-1"},
+    {v:"US$ 52.500", l:"o que o J-2 vale em 21 meses", c:"g", s:"mais do que a diferença entre a melhor e a pior bolsa desta varredura"},
+    {v:"0", l:"escolas com política confirmada", c:"r", s:"a pergunta do DS-2019 ainda não foi feita a nenhuma delas"}
+  ].map(c=>'<div class="card '+c.c+'"><div class="v">'+c.v+'</div><div class="l">'+c.l+'</div><div class="s">'+c.s+'</div></div>').join("");
+}
+
+/* ==================== VISÃO GERAL ==================== */
+function renderCards(){
+  const teto = tetoAtual();
+  const cabem = P.filter(p => divida(p) <= teto).length;
+  const passam = P.filter(p => passa(p) === "Sim").length;
+  let pch = 1; LINKS.forEach(l => pch *= (S.chain[l.k]!==undefined?S.chain[l.k]:l.tech)/100);
+  const niw = S.chain.niwOn === false ? pch : 1-(1-pch)*(1-(S.chain.niwP||65)/100);
+  const nR = ROTA.filter((r,i)=>S.rota[i]).length, nP = PEND.filter((p,i)=>S.pend[i]).length;
+
+  document.getElementById("ovCards").innerHTML = [
+    {v:P.length, l:"cenários mapeados", c:"p", s:"9 escolas, em camadas de financiamento"},
+    {v:passam, l:"passam no teste &le;30%", c:passam>2?"g":"y", s:"e os três dependem do prêmio mais competitivo da escola"},
+    {v:cabem+"/"+P.length, l:"cabem no teto de dívida", c:cabem===P.length?"g":"y", s:"o que estoura o teto não é escola cara — é <strong>bolsa parcial</strong> em escola cara (cenário S4, na aba Financiamento)"},
+    {v:money0(teto).replace("US$ ",""), l:"teto de dívida (US$)", c:"a", s:"o que 36 meses de OPT quitam sozinhos, já descontado o jurídico"},
+    {v:"US$ 29k", l:"custo jurídico do plano", c:"y", s:"não financiável — disputa a mesma sobra que quita a dívida"},
+    {v:P.filter(p=>p.j1.t==="forte").length+"/"+P.length, l:"com J-1 plausível", c:"a", s:"pela aritmética do 22 CFR 62.23 — a política da escola ainda não foi perguntada a nenhuma"},
+    {v:pct(niw), l:"P(ficar) com H-1B + NIW", c:niw>0.5?"g":"y", s:"contra "+pct(pch)+" só com H-1B"},
+    {v:nR+"/"+ROTA.length, l:"marcos da rota", c:"p", s:"2026 a 2033"},
+    {v:nP+"/"+PEND.length, l:"pendências resolvidas", c:nP>0?"g":"o", s:"a consulta com advogado é a de maior prioridade"}
+  ].map(c=>'<div class="card '+c.c+'"><div class="v">'+c.v+'</div><div class="l">'+c.l+'</div><div class="s">'+c.s+'</div></div>').join("");
+
+  document.getElementById("ovRank").innerHTML = RANK.map((r,i) =>
+    '<div class="rank"><div class="pos2">'+(i+1)+'</div><div><div class="rn">'+r.n+'</div><div class="rw">'+r.w+'</div></div>' +
+    '<div class="rr">'+r.r+'</div></div>').join("");
+}
+
+/* ==================== INIT ==================== */
+function renderAll(){
+  renderProgramas(); renderKanban(); renderRota(); renderPend(); renderJur(); renderJ1(); renderCards();
+}
+load();
+/* restaura o simulador */
+if(S.sim && S.sim.emp !== undefined){
+  document.getElementById("fEmp").value = S.sim.emp;
+  document.getElementById("fApr").value = S.sim.apr;
+  document.getElementById("fAnos").value = S.sim.anos;
+  document.getElementById("fCap").value = S.sim.cap;
+  document.getElementById("fAdm").value = S.sim.adm;
+  document.getElementById("fSal").value = S.sim.sal;
+  document.getElementById("fJur").checked = S.sim.jur !== false;
+  document.getElementById("fJurC").value = S.sim.jurC || "28700";
+}
+if(S.chain && S.chain.niwP !== undefined){
+  document.getElementById("cNiwP").value = S.chain.niwP;
+  document.getElementById("cNiw").checked = S.chain.niwOn !== false;
+}
+/* popula selects dependentes de dados */
+document.getElementById("pgStatus").innerHTML = '<option value="">Todos os status</option>' + STATUS.map(s=>'<option>'+s+'</option>').join("");
+document.getElementById("fPreset").innerHTML = '<option value="">— escolher —</option>' +
+  P.filter(p=>divida(p)>0).map(p=>'<option value="'+divida(p)+'">'+p.inst+' — '+p.cen+' ('+money0(divida(p))+')</option>').join("") +
+  '<option value="0">Prêmio de topo — sem dívida</option>';
+renderChain();
+calcFin();
+renderAll();
+document.addEventListener("keydown", e => { if(e.key === "Escape") closeModal(); });
+</script>
+</body>
+</html>
