@@ -285,6 +285,33 @@ ul.tight li{margin-bottom:6px;font-size:13px}
       </ul>
     </div>
   </details>
+  <details class="note" style="margin:0 0 14px">
+    <summary style="cursor:pointer;font-weight:600">O que foi eliminado na varredura das escolas com mais bolsa por aluno (set/2026)</summary>
+    <div style="margin-top:10px">
+      <p>A lista partiu de um ranking de dinheiro de bolsa por aluno. Ele mede a <b>capacidade</b> da escola de dar — não a chance de o dinheiro chegar a um internacional, nem se cobre custo de vida. Dez escolas da lista já estavam no painel e três já tinham sido eliminadas (Virginia Tech, Texas A&amp;M Mays e UW Foster).</p>
+      <p><b>Não existe mais, ou não é MBA residencial em tempo integral:</b></p>
+      <ul>
+        <li><b>Holy Names University</b> — fechou em maio de 2023; o MBA foi transferido para a Notre Dame de Namur.</li>
+        <li><b>Kettering</b> — MBA online/híbrido desenhado para quem já trabalha.</li>
+        <li><b>James Madison</b> — formato blended, com parte das aulas online.</li>
+        <li><b>Lehigh</b> — o MBA em tempo integral é de <b>um ano</b>: sem verão para estágio e, no J-1, com Academic Training limitado à duração do curso.</li>
+      </ul>
+      <p><b>Dinheiro que não chega a um internacional, ou não chega inteiro:</b></p>
+      <ul>
+        <li><b>WPI</b> — assistantship de até 10h/semana <b>sem remissão de tuition</b>, só pagamento por hora; as assistantships de verdade são reservadas a doutorandos.</li>
+        <li><b>WashU Olin</b> — cinco bolsas de US$ 60 mil a US$ 100 mil contra US$ 150.920 de programa: mesmo a maior deixa US$ 50 mil de tuition descobertos, mais o custo de vida inteiro.</li>
+        <li><b>Cornell (Johnson)</b> — a bolsa de tuition integral da escola, a <b>Park Leadership Fellowship</b>, é só para cidadãos americanos. O que sobra para internacional é mérito parcial.</li>
+        <li><b>Wharton</b> — não dá auxílio por necessidade a internacional e as bolsas de mérito são parciais: sobram mais de US$ 80 mil de tuition.</li>
+        <li><b>Tuck</b> — bolsa média de ~US$ 35 mil/ano (fonte secundária) contra US$ 88 mil de tuition/ano, em Hanover, onde o aluguel de 1 quarto passa de US$ 3.000. Com tuition integral, a dívida ficaria em ~US$ 84 mil, perto do teto; com a bolsa média, estoura.</li>
+        <li><b>Kellogg</b> — bolsas de mérito sem tuition integral publicada para internacional; tuition de US$ 86 mil/ano.</li>
+      </ul>
+      <p><b>Custo da cidade — o padrão das varreduras anteriores:</b></p>
+      <ul>
+        <li><b>Columbia e NYU Stern</b> — Nova York tem aluguel igual ou acima de Boston, onde nem tuition integral cabia com folga.</li>
+        <li><b>Stanford GSB, Berkeley Haas, UCLA Anderson, USC Marshall e Santa Clara Leavey</b> — Califórnia, pelo mesmo motivo do bloco anterior. Stanford é a única, com Harvard, que dá bolsa por necessidade a internacional (~US$ 47–50 mil/ano para metade da turma), e isso não cobre tuition mais Palo Alto.</li>
+      </ul>
+    </div>
+  </details>
   <div class="controls">
     <input type="text" id="pgSearch" placeholder="Buscar escola, cidade, cenário…" oninput="renderProgramas()">
     <select id="pgStem" onchange="renderProgramas()">
@@ -969,7 +996,95 @@ const P = [
    col:"97% colocados em 90 dias é uma das melhores taxas de todas as varreduras; Flórida não cobra imposto de renda",
    obs:"Excelente colocação, cidade barata, estado sem imposto de renda — e o MBA não é STEM. Seriam 12 meses de OPT contra os 36 que o plano inteiro pressupõe. Fica na lista pelo mesmo motivo da UT Dallas: mostra que nos oito estados o dinheiro e a arquitetura raramente aparecem juntos.",
    j1:{t:"fraco", at:18, txt:"Bolsa de tuition sem stipend, e a escola diz explicitamente que assistantship é coisa de doutorado. Sem contrapartida institucional de custo de vida."},
-   pend:["Confirmar se a Warrington tem plano de designar o MBA como STEM","Levantar custo de vida do casal em Gainesville pela metodologia do projeto"]}
+   pend:["Confirmar se a Warrington tem plano de designar o MBA como STEM","Levantar custo de vida do casal em Gainesville pela metodologia do projeto"]},
+
+  {id:"emory-woodruff", inst:"Emory — Goizueta", cid:"Atlanta, GA", mes:21,
+   cen:"Woodruff Scholar: tuition e taxas integrais + stipend de US$ 15.000/ano",
+   stem:"sim", stemT:"Todos os programas de MBA da Goizueta são STEM-designados — o MBA inteiro, sem trilha nem eletiva", stemC:"Confirmado",
+   custo:74375, rec:45600, def:-28775, sal:175000, salT:"mediana de base da turma de 2025; 89% com oferta aceita em 3 meses; consultoria levou 41%, bens de consumo e varejo só 6%",
+   fin:"Quatro Woodruff Scholarships por ano: tuition e taxas integrais mais US$ 15.000/ano de stipend, garantidos pela duração do MBA, por mérito e com consideração automática. As bolsas da escola são abertas a domésticos e internacionais — mas a página não diz isso especificamente do Woodruff", finC:"A verificar",
+   mkt:"Existe um centro de Marketing & Communications com fellowship própria (com stipend). Mas marketing não é a vocação da escola: o destino dominante é consultoria",
+   col:"Atlanta é mercado grande (Coca-Cola, Home Depot, Delta, agências) e o aluguel de 1 quarto é US$ 1.627 — mais barato que Chicago, Filadélfia ou qualquer cidade da Costa Leste pesquisada",
+   obs:"A melhor estrutura de todas as varreduras do projeto: é a única bolsa encontrada que paga tuition E moradia em MBA inteiro STEM, com salário de topo. Dívida de US$ 28,8 mil, parcela de ~US$ 555/mês, 8% da sobra mensal. ⚠️ São QUATRO prêmios por ano. Este é o melhor caso possível, não o esperado — a linha seguinte mostra a mesma escola sem o stipend.",
+   j1:{t:"forte", at:18, txt:"Junto com a Darden-Jefferson, a configuração mais forte do projeto: tuition, taxas e US$ 30 mil em dinheiro institucional para viver. O financiamento não-pessoal passa com folga da metade do custo total, sem depender de interpretação do 22 CFR 62.23. A condicional é dupla: o Woodruff precisa estar aberto a internacional, e a Emory precisa emitir DS-2019 sobre financiamento próprio."},
+   pend:["Confirmar por escrito que internacionais concorrem ao Woodruff","Confirmar se o Woodruff cobre o seguro-saúde do aluno (US$ 5.588/ano na planilha de custos da escola)","Aplicar cedo: uma página da escola fala em Rodada 2 para as bolsas nomeadas, outra em Rodada 3 — tratar como Rodada 2","Perguntar se a escola emite DS-2019 com base em financiamento institucional, ou só I-20"]},
+
+  {id:"emory-tuit", inst:"Emory — Goizueta", cid:"Atlanta, GA", mes:21,
+   cen:"Só tuition integral, sem stipend",
+   stem:"sim", stemT:"Todos os programas de MBA da Goizueta são STEM-designados", stemC:"Confirmado",
+   custo:74375, rec:19500, def:-54875, sal:175000, salT:"mediana de base da turma de 2025",
+   fin:"A escola anuncia bolsas de parcial a tuition integral mais stipend; a Goizueta Scholars é aberta a domésticos e internacionais, sem valor publicado. Não há distribuição publicada dos prêmios. Tuition e taxas: US$ 163.549 no programa", finC:"A verificar",
+   mkt:"Mesma escola, mesmo currículo",
+   col:"Mesmo mercado",
+   obs:"O que sobra da Emory sem o Woodruff — e ainda é bom. US$ 54,9 mil de dívida, ~US$ 1.058/mês, 15% da sobra: empata com o Kelley sem dinheiro, com salário mais alto e cidade maior. A diferença entre as duas linhas da Emory (US$ 26 mil de dívida) é o valor do stipend.",
+   j1:{t:"medio", at:18, txt:"Tuition e taxas integrais somam ~US$ 163 mil de dinheiro institucional contra ~US$ 74 mil de custo de vida: na aritmética passa da metade. Mas o custo de vida inteiro sairia de empréstimo, que conta como fundo pessoal no DS-2019 — o mesmo caso indeterminado do Kelley sem dinheiro."},
+   pend:["Perguntar a distribuição dos prêmios: quantos recebem tuition integral","Perguntar se a escola emite DS-2019 com base em financiamento institucional, ou só I-20"]},
+
+  {id:"owen-deans", inst:"Vanderbilt — Owen", cid:"Nashville, TN", mes:21,
+   cen:"Dean's Scholar: tuition integral",
+   stem:"sim", stemT:"Dupla cobertura: o MBA inteiro é STEM desde a turma de 2025, e existe uma concentração STEM própria de marketing — Consumer Psychology and Marketing Analytics", stemC:"Confirmado",
+   custo:75425, rec:19500, def:-55925, sal:148000, salT:"média (não mediana) de base da turma de 2025 + US$ 36 mil de bônus médio; 87% com oferta em 90 dias",
+   fin:"Dean's Scholars Award Program: tuition integral para um grupo selecionado da turma, sem stipend. Bolsas em geral vão de US$ 10 mil a tuition integral (US$ 76.700/ano). Número de prêmios e elegibilidade de internacionais não publicados", finC:"A verificar",
+   mkt:"Marketing é ponto forte declarado da escola, com concentração STEM em psicologia do consumidor e marketing analytics, e um mestrado em Marketing à parte",
+   col:"Nashville cresce como polo de saúde, música e mídia; o Tennessee não cobra imposto de renda sobre salário",
+   obs:"O achado mais alinhado ao pedido original depois do Kelley: é a única escola das varreduras com o MBA inteiro STEM E uma concentração STEM de marketing — cobertura melhor que a do próprio Kelley. Dívida de US$ 55,9 mil, ~US$ 1.078/mês, 20% da sobra. Sem stipend, todo o custo de vida vira dívida. E o salário publicado é média, não mediana — tende a estar inflado.",
+   j1:{t:"medio", at:18, txt:"Tuition integral de ~US$ 153 mil contra ~US$ 75 mil de custo de vida: passa da metade na aritmética. Sem stipend, o sustento do casal seria empréstimo — fundo pessoal no DS-2019. Indeterminado até a escola responder."},
+   pend:["Perguntar quantos Dean's Scholars são nomeados por ano e se internacionais concorrem","Confirmar a mediana (não a média) de base no relatório oficial","Confirmar o mínimo de Duolingo do MBA (130 é o da pós-graduação da universidade)","Perguntar se a escola emite DS-2019 com base em financiamento institucional, ou só I-20"]},
+
+  {id:"ross-integral", inst:"Michigan — Ross", cid:"Ann Arbor, MI", mes:21,
+   cen:"Bolsa de tuition integral (o stipend anual, se vier, não está contado)",
+   stem:"parcial", stemT:"STEM pela Specialization in Management Science: 14 créditos (10 em disciplinas-base) em sete áreas, incluindo Marketing Engineering and Analytics. Não é o MBA inteiro — sem completar a especialização, o diploma não sai STEM", stemC:"Confirmado",
+   custo:69300, rec:19500, def:-49800, sal:170000, salT:"mediana de base da turma de 2025 + US$ 30 mil de bônus; 86% com oferta em 3 meses, 92% em 6",
+   fin:"Bolsas de US$ 10 mil até tuition integral (US$ 81.152/ano para não-residentes) mais um stipend anual para despesas não-tuition; internacionais elegíveis e consideração automática. ⚠️ A página oficial de bolsas bloqueou o acesso — os números vêm de fonte secundária", finC:"A verificar",
+   mkt:"Marketing forte e tradicional, com recrutamento de bens de consumo e tecnologia; a especialização STEM aceita disciplinas de marketing analytics",
+   col:"Top-12 nacional; principais recrutadores: BCG, McKinsey, Amazon, Deloitte e Bain. Ann Arbor tem aluguel de US$ 1.387 — o mais barato entre as escolas de topo pesquisadas",
+   obs:"Cidade barata com salário de topo — a combinação mais rara das varreduras. Mesmo sem contar o stipend, dívida de US$ 49,8 mil, ~US$ 960/mês, 14% da sobra: a melhor fração entre os cenários só de tuition. Se o stipend anual existir e for dinheiro, a linha melhora. O risco é o STEM por especialização, que exige planejar a grade desde o primeiro semestre.",
+   j1:{t:"medio", at:18, txt:"Tuition integral de ~US$ 162 mil contra ~US$ 69 mil de custo de vida: passa da metade. Se o stipend anual existir e for pago em dinheiro, a linha pode subir para plausível — é a pergunta que decide."},
+   pend:["Confirmar o valor do stipend anual e se é dinheiro ou reembolso de despesas específicas","Confirmar quantos recebem tuition integral","Planejar a grade da Specialization in Management Science desde o primeiro semestre","Perguntar se a escola emite DS-2019 com base em financiamento institucional, ou só I-20"]},
+
+  {id:"scheller-ga", inst:"Georgia Tech — Scheller", cid:"Atlanta, GA", mes:21,
+   cen:"Graduate assistantship: redução de tuition + salário mensal (salário não contado)",
+   stem:"sim", stemT:"MBA inteiro STEM desde 31 de maio de 2022", stemC:"Confirmado",
+   custo:74375, rec:19500, def:-54875, sal:140000, salT:"mediana de base + US$ 30 mil de bônus (fonte secundária); média de US$ 146 mil na turma de 2024",
+   fin:"Mais da metade dos ingressantes recebe assistantship ou fellowship — a maior taxa de cobertura das varreduras. Até 14h/semana, salário mensal mais redução de tuition, valor estimado de até US$ 93 mil. Residentes e não-residentes são avaliados. ⚠️ Os US$ 93 mil batem com dois anos de tuition de não-residente: o número grande é a isenção, e o salário mensal não é publicado", finC:"A verificar",
+   mkt:"Escola de tecnologia; marketing existe, mas o forte é tech, operações e analytics",
+   col:"Atlanta, mesmo mercado da Emory. Premiada em 2025 pela Poets&Quants pelo serviço de carreira",
+   obs:"A maior probabilidade de financiamento de todas as varreduras — mais da metade da turma — em MBA inteiro STEM e escola pública barata (US$ 46,5 mil/ano para não-residente). A conta não soma o salário mensal, porque o valor não é publicado: é o piso. Dívida de até US$ 54,9 mil, ~US$ 1.058/mês, 22% da sobra. Cada US$ 1.000/mês de salário nos dois anos letivos tira cerca de US$ 16 mil da dívida. ⚠️ Não aceita Duolingo.",
+   j1:{t:"medio", at:18, txt:"Assistantship é emprego pago pela própria universidade — exatamente o tipo de dinheiro que o 22 CFR 62.23 conta. A redução de tuition sozinha já passa da metade; com o salário mensal, a linha pode virar plausível. Indeterminado até se saber o salário."},
+   pend:["⭐ Perguntar o valor do salário mensal da assistantship de MBA","Confirmar se a redução de tuition é integral para internacional (há tarifa de não-residente e de fora do país)","Fazer TOEFL (mínimo 95) ou IELTS (mínimo 7) — não aceita Duolingo","Perguntar se a escola emite DS-2019 com base em financiamento institucional, ou só I-20"]},
+
+  {id:"mccombs-integral", inst:"UT Austin — McCombs", cid:"Austin, TX", mes:21,
+   cen:"Bolsa de mérito com tuition integral",
+   stem:"sim", stemT:"As três concentrações de marketing são STEM-certificadas — incluindo Brand & Product Management. O requisito é o núcleo mais duas disciplinas (MKT 282 Analysis of Markets e STA 287 Business Analytics)", stemC:"Confirmado",
+   custo:70175, rec:19500, def:-50675, sal:150000, salT:"mediana de base da turma de 2025 + US$ 30 mil de bônus; só 80% dos que buscaram emprego tinham oferta em 6 meses",
+   fin:"86% dos internacionais matriculados receberam oferta de bolsa; prêmios de US$ 2 mil a tuition integral, em dinheiro ou isenção da parcela de não-residente. Tuition de não-residente: ~US$ 59.700/ano (~US$ 122.400 no programa)", finC:"A verificar",
+   mkt:"Brand & Product Management STEM-certificada: com o Kelley, a combinação mais exata do pedido — marca e STEM no mesmo diploma, sem pathway de eletivas",
+   col:"Austin é polo de tecnologia (Dell, Apple, Oracle, Tesla); o Texas não cobra imposto de renda; aluguel de 1 quarto de US$ 1.421",
+   obs:"STEM exato em marca, cidade razoável, estado sem imposto de renda e 86% dos internacionais com oferta de bolsa. Com tuition integral: dívida de US$ 50,7 mil, ~US$ 977/mês, 18% da sobra. ⚠️ Tuition integral é o topo da faixa; o cenário provável é isenção de não-residente ou bolsa parcial, e aí a dívida sobe. E a colocação é a mais fraca entre as escolas novas (80% com oferta em 6 meses).",
+   j1:{t:"medio", at:18, txt:"Tuition integral de ~US$ 122 mil contra ~US$ 70 mil de custo de vida: passa da metade, com menos folga que as privadas. Com bolsa parcial ou só a isenção de não-residente, cai abaixo da metade e vira improvável."},
+   pend:["Perguntar o valor da tuition de residente — é o piso se vier só a isenção de não-residente","Confirmar no site oficial o dado de 86% dos internacionais com oferta de bolsa","Confirmar o mínimo de Duolingo (a escola aceita, sem mínimo publicado)","Perguntar se a escola emite DS-2019 com base em financiamento institucional, ou só I-20"]},
+
+  {id:"byu-igss", inst:"BYU — Marriott", cid:"Provo, UT", mes:21,
+   cen:"IGSS (bolsa para internacionais) de tuition integral",
+   stem:"parcial", stemT:"STEM pela especialização STEM-Management: 15 créditos de eletivas específicas além dos 12 de conteúdo STEM já no núcleo do MBA", stemC:"Confirmado",
+   custo:67550, rec:19500, def:-48050, sal:120000, salT:"fontes secundárias divergem entre US$ 107 mil e US$ 135 mil; usado um valor intermediário conservador",
+   fin:"Tuition de US$ 17.344/ano para quem não é membro da Igreja SUD (o dobro do cobrado de membros). A International Graduate Student Scholarship cobre de um quarto a tuition integral; ~60% da turma recebe alguma bolsa parcial", finC:"A verificar",
+   mkt:"Marketing existe; o forte da escola é consultoria, finanças e tecnologia",
+   col:"93% empregados na formatura; Provo tem aluguel de US$ 1.299",
+   obs:"A conta fecha — dívida de US$ 48 mil, ~US$ 926/mês — mas o salário mais baixo empurra a parcela para 25% da sobra. E há uma condição que não é financeira: todo aluno, membro ou não da Igreja, precisa se comprometer com o Honor Code (sem álcool, café ou chá, com normas de vestuário e conduta) e manter um endosso eclesiástico válido — obtido em entrevista com um líder religioso — para se matricular, continuar e receber o diploma. A obrigação formal é do aluno. Fica aqui porque a aritmética é boa; conviver com essa regra é decisão pessoal.",
+   j1:{t:"fraco", at:18, txt:"O inverso da Emory: a tuition é tão barata que a bolsa integral (~US$ 35 mil) cobre só um terço do custo total. Com ~US$ 67 mil de custo de vida saindo de empréstimo, o financiamento não-pessoal não chega à metade — falha no próprio regulamento, antes da política da escola."},
+   pend:["Confirmar na página oficial os valores da IGSS e quantos recebem tuition integral","Confirmar a mediana de base no relatório anual oficial","Duolingo exige 130 no total E 125 em cada habilidade — a regra mais dura do painel"]},
+
+  {id:"yale-integral", inst:"Yale — SOM", cid:"New Haven, CT", mes:21,
+   cen:"Bolsa de mérito com tuition integral",
+   stem:"sim", stemT:"MBA inteiro STEM-elegível desde outubro de 2024; antes, só o major de Management Science", stemC:"Confirmado",
+   custo:87150, rec:19500, def:-67650, sal:175000, salT:"mediana de base da turma de 2025; mas só 82% dos que buscaram emprego tinham oferta em 3 meses",
+   fin:"US$ 7,8 milhões em bolsas para a turma que entrou em 2024, só por mérito, abertas a internacionais, por aplicação suplementar depois da admissão. Tuition integral aparece nas Aspire Fellowships (de US$ 60 mil a integral) e na Consortium (restrita a americanos). Sem stipend. Tuition e taxas: US$ 91.400/ano", finC:"A verificar",
+   mkt:"Não é o forte da escola: consultoria (37%) e finanças (29%) dominam; tecnologia fica em 8%",
+   col:"New Haven tem aluguel de US$ 2.237 — a cidade mais cara entre as escolas que ainda cabem no teto",
+   obs:"A Ivy League que a aritmética não elimina — se vier tuition integral. Dívida de US$ 67,7 mil, ~US$ 1.304/mês, 19% da sobra graças ao salário alto. Mas US$ 7,8 milhões para uma turma de ~350 dão algo como US$ 22 mil por aluno: tuition integral é exceção rara. Com a bolsa típica sobram mais de US$ 150 mil de tuition e a linha estoura o teto. Não exige teste de inglês.",
+   j1:{t:"medio", at:18, txt:"Tuition integral de ~US$ 183 mil contra ~US$ 87 mil de custo de vida: passa da metade na aritmética. Sem stipend, o sustento do casal é empréstimo. Indeterminado."},
+   pend:["Confirmar se as Aspire Fellowships são abertas a internacionais","Preencher a aplicação suplementar de bolsa — sem ela, não há consideração","Perguntar se a escola emite DS-2019 com base em financiamento institucional, ou só I-20"]}
 ];
 
 /* Teste de inglês por escola — verificado em páginas oficiais em set/2026. t: sim | nao | sem (não aceita teste nenhum) | conf (a confirmar) */
@@ -993,7 +1108,14 @@ const ING = {
   "Chicago — Booth": {t:"sim", m:null, x:"Aceita TOEFL, IELTS, PTE ou Duolingo; mínimo não publicado."},
   "Boston University — Questrom": {t:"sim", m:120, x:"Recomendado, não mínimo. TOEFL 90 ou IELTS 6,5 por banda como alternativas."},
   "UT Dallas — Jindal": {t:"conf", m:105, x:"A universidade aceita Duolingo com 105, mas a página do MBA lista só TOEFL ou IELTS. Tratar como não aceito até a escola confirmar por escrito."},
-  "Florida — Warrington": {t:"nao", m:null, x:"A UF não lista o Duolingo. Aceita TOEFL 4,5 (escala nova), IELTS 6,5 ou GRE verbal 140."}
+  "Florida — Warrington": {t:"nao", m:null, x:"A UF não lista o Duolingo. Aceita TOEFL 4,5 (escala nova), IELTS 6,5 ou GRE verbal 140."},
+  "Emory — Goizueta": {t:"sim", m:120, x:"Recomendado 120–125, não mínimo. Vale para todos os MBAs da escola."},
+  "Vanderbilt — Owen": {t:"sim", m:130, x:"A página do MBA aceita o Duolingo sem publicar mínimo próprio; 130 é o mínimo da pós-graduação da universidade. Tratar 130 como alvo."},
+  "Michigan — Ross": {t:"sim", m:null, x:"Aceita TOEFL, PTE, IELTS ou Duolingo, sem mínimo publicado."},
+  "Georgia Tech — Scheller": {t:"nao", m:null, x:"Só TOEFL (mínimo 95, ou 5 na escala nova) ou IELTS (mínimo 7). A página não menciona Duolingo nem PTE."},
+  "UT Austin — McCombs": {t:"sim", m:null, x:"Aceita Duolingo sem mínimo publicado. TOEFL 79 ou IELTS 6,5 segundo fontes secundárias."},
+  "BYU — Marriott": {t:"sim", m:130, x:"130 no total E 125 em cada habilidade — a exigência mais dura do painel. Alternativas: TOEFL 100 (22 em speaking, 21 nas demais), IELTS 7 (6 por módulo) ou CAE 180."},
+  "Yale — SOM": {t:"sem", m:null, x:"Não exige teste de inglês de ninguém: avalia pelas perguntas em vídeo da candidatura."}
 };
 function detSort(p){ const i = ING[p.inst]; if(!i) return -3; if(i.t==="nao") return -2; if(i.t==="conf") return -1; if(i.t==="sem") return 0; return i.m || 1; }
 function detTag(p){
@@ -1037,6 +1159,13 @@ const CIDADES = [
   {c:"Chicago, IL", br:2053, ano:47600, f:"Estimado (set/2026)"},
   {c:"San Diego, CA", br:2400, ano:51800, f:"Estimado (set/2026)"},
   {c:"Irvine, CA", br:2700, ano:55400, f:"Estimado (set/2026)"},
+  {c:"Provo, UT", br:1299, ano:38600, f:"Estimado (set/2026)"},
+  {c:"Ann Arbor, MI", br:1387, ano:39600, f:"Estimado (set/2026)"},
+  {c:"Austin, TX", br:1421, ano:40100, f:"Estimado (set/2026)"},
+  {c:"Atlanta, GA", br:1627, ano:42500, f:"Estimado (set/2026)"},
+  {c:"Nashville, TN", br:1674, ano:43100, f:"Estimado (set/2026)"},
+  {c:"New Haven, CT", br:2237, ano:49800, f:"Estimado (set/2026)"},
+  {c:"Hanover, NH", br:3000, ano:59000, f:"Estimado (set/2026) — referência da Tuck"},
   {c:"Boston, MA", br:3371, ano:63500, f:"Estimado (set/2026)"}
 ];
 
@@ -1101,8 +1230,14 @@ const PEND = [
   {t:"Confirmar se a Warrington (UF) planeja designar o MBA como STEM", w:"Colocação de 97% em 90 dias, cidade barata, estado sem imposto — só falta o selo"},
   {t:"Levantar custo de vida do casal em Houston, Pittsburgh, Chicago e Gainesville", w:"Entraram estimados em set/2026"},
   {t:"Confirmar medianas de base oficiais de Tepper, Booth e Questrom", w:"As três entraram por faixa, não por relatório"},
-  {t:"Reconferir em 2027, antes de agendar, quais escolas ainda aceitam o Duolingo e as notas mínimas", w:"17 de 21 aceitavam em set/2026. A UGA cortou em 2023 e a Ohio State já avisa que pode cortar. A nota que decide é a do Kelley: 130", p:true},
-  {t:"Pedir à UT Dallas confirmação por escrito sobre o Duolingo no MBA", w:"A universidade aceita (105), a página do MBA lista só TOEFL e IELTS"}
+  {t:"Reconferir em 2027, antes de agendar, quais escolas ainda aceitam o Duolingo e as notas mínimas", w:"22 de 28 aceitavam em set/2026. A UGA cortou em 2023, a Ohio State já avisa que pode cortar e o Scheller nunca aceitou. A nota que decide é 130: Kelley, Vanderbilt e BYU — que ainda exige 125 em cada habilidade", p:true},
+  {t:"Pedir à UT Dallas confirmação por escrito sobre o Duolingo no MBA", w:"A universidade aceita (105), a página do MBA lista só TOEFL e IELTS"},
+  {t:"Perguntar à Emory se o Woodruff Scholarship aceita internacionais", w:"Tuition, taxas e US$ 15 mil/ano de stipend em MBA inteiro STEM — se aceitar, é a melhor linha do painel junto com a Darden-Jefferson. São 4 prêmios por ano", p:true},
+  {t:"Perguntar ao Georgia Tech Scheller o valor do salário mensal da assistantship de MBA", w:"Mais da metade da turma recebe; o número publicado (até US$ 93 mil) é quase todo isenção de tuition. O salário decide o J-1 e a dívida", p:true},
+  {t:"Confirmar o stipend anual do Michigan Ross e quantos recebem tuition integral", w:"A página oficial de bolsas bloqueou o acesso em set/2026; os números vieram de fonte secundária"},
+  {t:"Perguntar à Vanderbilt quantos Dean's Scholars são nomeados e se internacionais concorrem", w:"É a escola com a melhor cobertura STEM em marketing do painel"},
+  {t:"Perguntar à UT Austin (McCombs) a tuition de residente e a distribuição das bolsas de internacionais", w:"86% dos internacionais recebem oferta, mas a faixa vai de US$ 2 mil a integral"},
+  {t:"Levantar custo de vida do casal em Atlanta, Nashville, Ann Arbor, Austin, Provo e New Haven", w:"Entraram estimados em set/2026 pela fórmula do painel (aluguel × 12 + US$ 23 mil)"}
 ];
 
 const JURIDICO = {
@@ -1546,7 +1681,7 @@ function renderCards(){
   const nR = ROTA.filter((r,i)=>S.rota[i]).length, nP = PEND.filter((p,i)=>S.pend[i]).length;
 
   document.getElementById("ovCards").innerHTML = [
-    {v:P.length, l:"cenários mapeados", c:"p", s:"9 escolas, em camadas de financiamento"},
+    {v:P.length, l:"cenários mapeados", c:"p", s:new Set(P.map(p=>p.inst)).size+" escolas, em camadas de financiamento"},
     {v:passam, l:"passam no teste &le;30%", c:passam>2?"g":"y", s:"e os três dependem do prêmio mais competitivo da escola"},
     {v:cabem+"/"+P.length, l:"cabem no teto de dívida", c:cabem===P.length?"g":"y", s:"o que estoura o teto não é escola cara — é <strong>bolsa parcial</strong> em escola cara (cenário S4, na aba Financiamento)"},
     {v:money0(teto).replace("US$ ",""), l:"teto de dívida (US$)", c:"a", s:"o que 36 meses de OPT quitam sozinhos, já descontado o jurídico"},
